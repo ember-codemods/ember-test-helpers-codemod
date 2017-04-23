@@ -3,13 +3,15 @@ const lengthTransform = require('./lib/transforms/length');
 const hasClassTransform = require('./lib/transforms/has-class');
 const clickTransform = require('./lib/transforms/click');
 const focusTransform = require('./lib/transforms/focus');
+const getValueTransform = require('./lib/transforms/get-value');
 
 const transforms = [
   textTransform,
   lengthTransform,
   hasClassTransform,
   clickTransform,
-  focusTransform
+  focusTransform,
+  getValueTransform
 ];
 
 module.exports = function(file, api, options) {
