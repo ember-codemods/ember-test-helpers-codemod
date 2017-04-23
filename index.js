@@ -1,11 +1,13 @@
 const textTransform = require('./lib/transforms/text');
 const lengthTransform = require('./lib/transforms/length');
 const hasClassTransform = require('./lib/transforms/has-class');
+const clickTransform = require('./lib/transforms/click');
 
 const transforms = [
   textTransform,
   lengthTransform,
-  hasClassTransform
+  hasClassTransform,
+  clickTransform
 ];
 
 module.exports = function(file, api, options) {
