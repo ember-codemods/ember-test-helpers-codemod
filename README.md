@@ -21,11 +21,12 @@ This addon will perform the following transformations:
 | Before | After | Transform |
 | `this.$('.foo').attr('id')` | `find('.foo').getAttribute('id')` | `attr.js |
 | `this.$('.foo').click()` | `await click('.foo')` | `click.js` |
-| `this.$('.foo').change()` | `await triggerEvent('.foo', 'change')` | `event.js` |
-| `this.$('.foo').trigger('input')` | `await triggerEvent('.foo', 'input')` | `event.js` |
+| `this.$('.foo').change()` | `await triggerEvent('.foo', 'change')` | `change.js` |
+| `this.$('.foo').trigger('input')` | `await triggerEvent('.foo', 'input')` | `trigger.js` |
 | `this.$('.foo').focus()` | `await focus('.foo')` | `focus.`js` |
 | `this.$('.foo').val()` | `find('.foo').value` | `get-value.js` |
 | `this.$('div').hasClass('foo')` | `find('div').classList.contains('foo')` | `has-class.js` |
+| `this.$('.foo').trigger('keydown', { keyCode: 13 })` | `await keyEvent('.foo', 'keydown', 13)` | `key-event.js` |
 | `this.$('.foo').length` | `findAll('.foo').length` | `length.js` |
 | `this.$('.foo').prop('tagName')` | `find('.foo').tagName` | `prop.js` |
 | `this.$('.foo').val('foo')` | `await fillIn('.foo', 'foo')` | `set-value.js` |

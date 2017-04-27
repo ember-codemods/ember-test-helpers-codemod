@@ -9,6 +9,7 @@ const attrTransform = require('./lib/transforms/attr');
 const changeTransform = require('./lib/transforms/change');
 const triggerTransform = require('./lib/transforms/trigger');
 const propTransform = require('./lib/transforms/prop');
+const keyEventTransform = require('./lib/transforms/key-event');
 
 const transforms = [
   textTransform,
@@ -21,7 +22,8 @@ const transforms = [
   attrTransform,
   changeTransform,
   triggerTransform,
-  propTransform
+  propTransform,
+  keyEventTransform
 ];
 
 module.exports = function(file, api, options) {
