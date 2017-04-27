@@ -23,10 +23,11 @@ This addon will perform the following transformations:
 | `this.$('.foo').click()` | `await click('.foo')` | `click.js` |
 | `this.$('.foo').change()` | `await triggerEvent('.foo', 'change')` | `event.js` |
 | `this.$('.foo').trigger('input')` | `await triggerEvent('.foo', 'input')` | `event.js` |
-| `this.$('.foo').focus()` | `await focus('.foo')` | `focus.js` |
+| `this.$('.foo').focus()` | `await focus('.foo')` | `focus.`js` |
 | `this.$('.foo').val()` | `find('.foo').value` | `get-value.js` |
 | `this.$('div').hasClass('foo')` | `find('div').classList.contains('foo')` | `has-class.js` |
 | `this.$('.foo').length` | `findAll('.foo').length` | `length.js` |
+| `this.$('.foo').prop('tagName')` | `find('.foo').tagName` | `prop.js` |
 | `this.$('.foo').val('foo')` | `await fillIn('.foo', 'foo')` | `set-value.js` |
 | `this.$('.foo').val('bar').change()` | `await fillIn('.foo', 'foo'); await triggerEvent('.foo', 'change');` | `set-value.js` |
 | `this.$('.foo').val('bar').trigger('input')` | `await fillIn('.foo', 'foo'); await triggerEvent('.foo', 'input');` | `set-value.js` |
