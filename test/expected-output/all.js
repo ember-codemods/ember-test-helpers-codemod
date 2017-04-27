@@ -6,6 +6,11 @@ moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
   integration: true
 });
 
+async function fillInHelper(selector, value) {
+  await fillIn(selector, value);
+  await triggerEvent(selector, 'change');
+}
+
 test('it renders', async function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
@@ -28,5 +33,7 @@ test('and again', async function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
   await click('foo');
+
+  fillInHelper.call(this, '.foo input', 'bar');
   assert.ok(find('.foo').classList.contains('selected'));
 });

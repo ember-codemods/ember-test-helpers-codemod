@@ -6,6 +6,11 @@ moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
   integration: true
 });
 
+function fillInHelper(selector, value) {
+  this.$(selector).val(value);
+  this.$(selector).change();
+}
+
 test('it renders', async function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
@@ -27,5 +32,7 @@ test('and again', function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
   this.$('foo').click();
+
+  fillInHelper.call(this, '.foo input', 'bar');
   assert.ok(this.$('.foo').hasClass('selected'));
 });
