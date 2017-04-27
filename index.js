@@ -6,6 +6,8 @@ const focusTransform = require('./lib/transforms/focus');
 const getValueTransform = require('./lib/transforms/get-value');
 const setValueTransform = require('./lib/transforms/set-value');
 const attrTransform = require('./lib/transforms/attr');
+const changeTransform = require('./lib/transforms/change');
+const triggerTransform = require('./lib/transforms/trigger');
 
 const transforms = [
   textTransform,
@@ -15,7 +17,9 @@ const transforms = [
   focusTransform,
   getValueTransform,
   setValueTransform,
-  attrTransform
+  attrTransform,
+  changeTransform,
+  triggerTransform
 ];
 
 module.exports = function(file, api, options) {
