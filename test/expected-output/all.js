@@ -6,9 +6,9 @@ moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
   integration: true
 });
 
-async function fillInHelper(selector, value) {
-  await fillIn(selector, value);
-  await triggerEvent(selector, 'change');
+async function fillInHelper(value) {
+  await fillIn('.foo input', value);
+  await triggerEvent('.foo input', 'change');
 }
 
 test('it renders', async function(assert) {
@@ -34,6 +34,6 @@ test('and again', async function(assert) {
 
   await click('foo');
 
-  fillInHelper.call(this, '.foo input', 'bar');
+  fillInHelper.call(this, 'bar');
   assert.ok(find('.foo').classList.contains('selected'));
 });

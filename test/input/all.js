@@ -6,9 +6,9 @@ moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
   integration: true
 });
 
-function fillInHelper(selector, value) {
-  this.$(selector).val(value);
-  this.$(selector).change();
+function fillInHelper(value) {
+  this.$('.foo input').val(value);
+  this.$('.foo input').change();
 }
 
 test('it renders', async function(assert) {
@@ -33,6 +33,6 @@ test('and again', function(assert) {
 
   this.$('foo').click();
 
-  fillInHelper.call(this, '.foo input', 'bar');
+  fillInHelper.call(this, 'bar');
   assert.ok(this.$('.foo').hasClass('selected'));
 });
