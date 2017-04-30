@@ -10,6 +10,15 @@ test('it renders', async function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
   await triggerEvent('.foo', 'change');
+  await triggerEvent('.foo', 'submit');
+  await triggerEvent('.foo', 'focusout');
+  await triggerEvent('.foo', 'mousedown');
+  await triggerEvent('.foo', 'mouseenter');
+  await triggerEvent('.foo', 'mouseleave');
+  await triggerEvent('.foo', 'mousemove');
+  await triggerEvent('.foo', 'mouseout');
+  await triggerEvent('.foo', 'mouseover');
+  await triggerEvent('.foo', 'mouseup');
   await triggerEvent('.foo', 'input');
   assert.ok(true);
 });

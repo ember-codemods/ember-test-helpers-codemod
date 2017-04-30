@@ -34,7 +34,7 @@ This addon will perform the following transformations:
 |------------------------------------------------------|-----------------------------------------------------------------------|----------------|
 | `this.$('.foo').attr('id')`                          | `find('.foo').getAttribute('id')`                                     | `attr.js       |
 | `this.$('.foo').click()`                             | `await click('.foo')`                                                 | `click.js`     |
-| `this.$('.foo').change()`                            | `await triggerEvent('.foo', 'change')`                                | `change.js`    |
+| `this.$('.foo').change()`                            | `await triggerEvent('.foo', 'change')`                                | `trigger-shortcut.js` |
 | `this.$('.foo').trigger('input')`                    | `await triggerEvent('.foo', 'input')`                                 | `trigger.js`   |
 | `this.$('.foo').focus()`                             | `await focus('.foo')`                                                 | `focus.`js`    |
 | `this.$('.foo').val()`                               | `find('.foo').value`                                                  | `get-value.js` |
