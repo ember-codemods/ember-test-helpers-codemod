@@ -46,6 +46,7 @@ This addon will perform the following transformations:
 | `this.$('.foo').val('bar').change()`                 | `await fillIn('.foo', 'foo');  await triggerEvent('.foo', 'change');` | `set-value.js` |
 | `this.$('.foo').val('bar').trigger('input')`         | `await fillIn('.foo', 'foo');  await triggerEvent('.foo', 'input');`  | `set-value.js` |
 | `this.$('.foo').text()`                              | `find('.foo').textContent`                                            | `text.js`      |
+| `this.$('.foo').html()`                              | `find('.foo').innerHTML`                                              | `html.js`      |
 
 
 If you want to run only selected transforms on your code, you can just the needed transform:

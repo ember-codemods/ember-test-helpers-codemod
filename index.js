@@ -1,4 +1,5 @@
 const textTransform = require('./lib/transforms/text');
+const htmlTransform = require('./lib/transforms/html');
 const lengthTransform = require('./lib/transforms/length');
 const hasClassTransform = require('./lib/transforms/has-class');
 const clickTransform = require('./lib/transforms/click');
@@ -13,6 +14,7 @@ const keyEventTransform = require('./lib/transforms/key-event');
 
 const transforms = [
   textTransform,
+  htmlTransform,
   lengthTransform,
   hasClassTransform,
   clickTransform,
