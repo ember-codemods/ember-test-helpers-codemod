@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "Simon Ihmig <ihmig@kaliber5.de>",
   "license": "MIT",
+  "scripts": {
+    "test": "mocha"
+  },
   "dependencies": {
     "jscodeshift": "^0.3.30"
   },
