@@ -8,7 +8,7 @@ moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
 
 function fillInHelper(value) {
   this.$('.foo input').val(value);
-  this.$('.foo input').change();
+  this.$(`.foo input`).change();
 }
 
 test('it renders', async function(assert) {
@@ -23,8 +23,9 @@ test('it renders', async function(assert) {
 test('it renders again', function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
-  assert.equal(this.$('.foo input').length, 1);
-  assert.equal(this.$('.foo input').val(), 'foo');
+  let selector = '.foo input';
+  assert.equal(this.$(selector).length, 1);
+  assert.equal(this.$(selector).val(), 'foo');
   assert.ok(this.$('.foo').hasClass('selected'));
 });
 

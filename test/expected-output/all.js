@@ -8,7 +8,7 @@ moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
 
 async function fillInHelper(value) {
   await fillIn('.foo input', value);
-  await triggerEvent('.foo input', 'change');
+  await triggerEvent(`.foo input`, 'change');
 }
 
 test('it renders', async function(assert) {
@@ -24,8 +24,9 @@ test('it renders', async function(assert) {
 test('it renders again', function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
-  assert.equal(findAll('.foo input').length, 1);
-  assert.equal(find('.foo input').value, 'foo');
+  let selector = '.foo input';
+  assert.equal(findAll(selector).length, 1);
+  assert.equal(find(selector).value, 'foo');
   assert.ok(find('.foo').classList.contains('selected'));
 });
 
