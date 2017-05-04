@@ -4,10 +4,10 @@
 
 A [jscodeshift](https://github.com/facebook/jscodeshift) based codemod to help migrating your jQuery based Ember tests to [ember-native-dom-helpers](https://github.com/cibernox/ember-native-dom-helpers).
 
-*Please note that this will not be able to cover all possible cases how jQuery based tests can be written. 
+*Please note that this will not be able to cover all possible cases how jQuery based tests can be written.
 Given the dynamic nature of JavaScript and the extensive API and fluent interface of jQuery, this would be impossible.
-Instead this codemod focuses to cover the most common usages and do those transformations that it can safely do. 
-So it is likely that you will have to manually migrate some usages this tool cannot cover!*  
+Instead this codemod focuses to cover the most common usages and do those transformations that it can safely do.
+So it is likely that you will have to manually migrate some usages this tool cannot cover!*
 
 ## Usage
 
@@ -20,10 +20,9 @@ repository like Git and that you have no outstanding changes to commit before
 running this tool.
 
 ```bash
-npm install jscodeshift -g
-git clone https://github.com/simonihmig/ember-native-dom-helpers-codemod
-cd my-ember-app
-jscodeshift -t ../ember-native-dom-helpers-codemod tests/integration
+npm install -g ember-native-dom-helpers-codemod
+cd my-ember-app-or-addon
+ember-native-dom-helpers-codemod tests/integration
 ```
 
 ## Transformations
@@ -57,7 +56,6 @@ If you want to run only selected transforms on your code, you can just the neede
 ```bash
 jscodeshift -t ../ember-native-dom-helpers-codemod/lib/transforms/click.js tests/integration
 ```
-
 
 ### Acceptance tests
 
