@@ -9,5 +9,6 @@ moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
 test('it renders', function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
-  assert.equal(find('.foo').getAttribute('id'), 'foo');
+  assert.equal(find('.foo').id, 'foo');
+  assert.equal(find('.foo').getAttribute('data-test'), 'foo');
 });

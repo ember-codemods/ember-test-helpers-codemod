@@ -9,4 +9,5 @@ test('it renders', function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
   assert.equal(this.$('.foo').attr('id'), 'foo');
+  assert.equal(this.$('.foo').attr('data-test'), 'foo');
 });

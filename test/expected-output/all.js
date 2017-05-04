@@ -15,7 +15,7 @@ test('it renders', async function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
   await click('.foo');
-  assert.equal(find('.foo').getAttribute('id'), 'foo');
+  assert.equal(find('.foo').id, 'foo');
   await fillIn('.foo input', 'bar');
   await blur('.foo input');
   assert.equal(find('.foo').textContent.trim(), 'foo');
