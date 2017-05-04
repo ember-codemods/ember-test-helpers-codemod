@@ -11,6 +11,7 @@ test('it renders', async function(assert) {
 
   await triggerEvent('.foo', 'change');
   await triggerEvent('.foo', 'submit');
+  await triggerEvent('.foo', 'focusin');
   await triggerEvent('.foo', 'focusout');
   await triggerEvent('.foo', 'mousedown');
   await triggerEvent('.foo', 'mouseenter');

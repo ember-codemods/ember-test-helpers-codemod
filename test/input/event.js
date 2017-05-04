@@ -10,6 +10,7 @@ test('it renders', function(assert) {
 
   this.$('.foo').change();
   this.$('.foo').submit();
+  this.$('.foo').focusin();
   this.$('.foo').focusout();
   this.$('.foo').mousedown();
   this.$('.foo').mouseenter();
