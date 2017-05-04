@@ -45,8 +45,8 @@ This addon will perform the following transformations:
 | `this.$('.foo').length`                              | `findAll('.foo').length`                                              | `length.js`    |
 | `this.$('.foo').prop('tagName')`                     | `find('.foo').tagName`                                                | `prop.js`      |
 | `this.$('.foo').val('foo')`                          | `await fillIn('.foo', 'foo')`                                         | `set-value.js` |
-| `this.$('.foo').val('bar').change()`                 | `await fillIn('.foo', 'foo');  await triggerEvent('.foo', 'change');` | `set-value.js` |
-| `this.$('.foo').val('bar').trigger('input')`         | `await fillIn('.foo', 'foo');  await triggerEvent('.foo', 'input');`  | `set-value.js` |
+| `this.$('.foo').val('bar').change()`                 | `await fillIn('.foo', 'foo'); await blur('.foo');` | `set-value.js`   |
+| `this.$('.foo').val('bar').trigger('input')`         | `await fillIn('.foo', 'foo')`                        | `set-value.js` |
 | `this.$('.foo').text()`                              | `find('.foo').textContent`                                            | `text.js`      |
 | `this.$('.foo').html()`                              | `find('.foo').innerHTML`                                              | `html.js`      |
 

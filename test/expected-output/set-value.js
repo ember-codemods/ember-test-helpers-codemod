@@ -1,4 +1,4 @@
-import { fillIn, triggerEvent } from 'ember-native-dom-helpers';
+import { fillIn, blur } from 'ember-native-dom-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -11,8 +11,7 @@ test('it renders', async function(assert) {
 
   await fillIn('.foo', 'foo');
   await fillIn('.foo', 'bar');
-  await triggerEvent('.foo', 'change');
+  await blur('.foo');
   await fillIn('.foo', 'baz');
-  await triggerEvent('.foo', 'input');
   assert.ok(true);
 });

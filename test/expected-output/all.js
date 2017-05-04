@@ -1,4 +1,4 @@
-import { click, find, findAll, fillIn, triggerEvent } from 'ember-native-dom-helpers';
+import { click, find, findAll, fillIn, blur, triggerEvent } from 'ember-native-dom-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -17,7 +17,7 @@ test('it renders', async function(assert) {
   await click('.foo');
   assert.equal(find('.foo').getAttribute('id'), 'foo');
   await fillIn('.foo input', 'bar');
-  await triggerEvent('.foo input', 'change');
+  await blur('.foo input');
   assert.equal(find('.foo').textContent.trim(), 'foo');
 });
 
