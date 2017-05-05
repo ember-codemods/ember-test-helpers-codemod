@@ -5,6 +5,7 @@
   "main": "index.js",
   "author": "Simon Ihmig <ihmig@kaliber5.de>",
   "license": "MIT",
+  "bin": "./bin/ember-native-dom-helpers-codemod.js",
   "scripts": {
     "test": "mocha"
   },
