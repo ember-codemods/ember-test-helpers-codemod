@@ -9,7 +9,7 @@ moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
 test('it renders', function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
-  assert.ok(findAll('.foo:nth-child(1)').length);
+  assert.ok(this.$('.foo:eq(0)').length);
   assert.ok(this.$('.foo:even').length);
   assert.ok(this.$('.foo:odd').length);
   assert.ok(this.$('.foo:contains(foo)').length);
