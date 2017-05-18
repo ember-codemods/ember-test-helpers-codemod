@@ -4,7 +4,6 @@ const spawn = require('child_process').spawn;
 const temp = require('temp').track();
 
 const jscodeshiftPath = path.join(__dirname, '..', '..', 'node_modules', '.bin', 'jscodeshift');
-const tempPath = temp.mkdirSync('ember-native-dom-helpers-codemod');
 
 const TIMEOUT = 10000;
 const VERBOSE_ENV_VAR = 'VERBOSE_JSCODESHIFT';
@@ -15,6 +14,7 @@ module.exports = function(type) {
   let inputPath = path.join(__dirname, '..', type, 'input');
   let expectedPath = path.join(__dirname, '..', type, 'expected-output');
   let transformPath = path.join(__dirname, '..', '..', 'lib', 'presets', `${type}.js`);
+  let tempPath = temp.mkdirSync(`ember-native-dom-helpers-codemod-${type}`);
 
   function assertFilesEqual(file) {
     let expected = fs.readFileSync(expectedPath + '/' + file);
@@ -31,28 +31,30 @@ module.exports = function(type) {
 
   let files = fs.readdirSync(inputPath);
 
-  files.forEach(function(file) {
-    copy(inputPath + '/' + file, tempPath + '/' + file);
+  describe(type, function() {
+    files.forEach(function(file) {
+      copy(inputPath + '/' + file, tempPath + '/' + file);
 
-    it(`${file} input and output should match`, function(done) {
-      this.timeout(TIMEOUT);
+      it(`${file} input and output should match`, function(done) {
+        this.timeout(TIMEOUT);
 
-      let jscodeshift = spawn(jscodeshiftPath, jscodeshiftArgs(file), {
-        stdio: process.env[VERBOSE_ENV_VAR] === 'true' ? 'inherit' : 'ignore',
-        cwd: tempPath
-      });
+        let jscodeshift = spawn(jscodeshiftPath, jscodeshiftArgs(file), {
+          stdio: process.env[VERBOSE_ENV_VAR] === 'true' ? 'inherit' : 'ignore',
+          cwd: tempPath
+        });
 
-      jscodeshift.on('error', function(err) {
-        done(err);
-      });
+        jscodeshift.on('error', function(err) {
+          done(err);
+        });
 
-      jscodeshift.on('exit', function(code) {
-        if (code !== 0) {
-          done(new Error(`Non-zero exit code from jscodeshift for ${file}`));
-        } else {
-          assertFilesEqual(file);
-          done();
-        }
+        jscodeshift.on('exit', function(code) {
+          if (code !== 0) {
+            done(new Error(`Non-zero exit code from jscodeshift for ${file}`));
+          } else {
+            assertFilesEqual(file);
+            done();
+          }
+        });
       });
     });
   });
