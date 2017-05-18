@@ -6,7 +6,7 @@ moduleForAcceptance('click');
 test('visiting /foo', function(assert) {
   visit('/foo');
 
-  click('#bar')
+  click('#bar');
   andThen(function() {
     assert.equal(currentURL(), '/foo');
   });

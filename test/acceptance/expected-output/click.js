@@ -7,6 +7,6 @@ moduleForAcceptance('click');
 test('visiting /foo', async function(assert) {
   visit('/foo');
 
-  await click('#bar')
+  await click('#bar');
   assert.equal(currentURL(), '/foo');
 });
