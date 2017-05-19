@@ -22,7 +22,8 @@ running this tool.
 ```bash
 npm install -g ember-native-dom-helpers-codemod
 cd my-ember-app-or-addon
-ember-native-dom-helpers-codemod tests/integration
+ember-native-dom-helpers-codemod --type=integration tests/integration
+ember-native-dom-helpers-codemod --type=acceptance tests/acceptance
 ```
 
 ## Transformations
