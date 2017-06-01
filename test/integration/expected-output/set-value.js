@@ -1,4 +1,5 @@
 import { fillIn, blur } from 'ember-native-dom-helpers';
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -13,5 +14,6 @@ test('it renders', async function(assert) {
   await fillIn('.foo', 'bar');
   await blur('.foo');
   await fillIn('.foo', 'baz');
+  Ember.run(() => this.$('select').val('1').trigger('change'));
   assert.ok(true);
 });
