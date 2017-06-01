@@ -7,8 +7,9 @@ const path = require("path");
 try {
   let binPath = path.dirname(require.resolve("jscodeshift")) + "/bin/jscodeshift.sh";
   let transformPath = __dirname + "/../index.js";
-  let targetDir = process.argv[2];
-  let transform = spawn(binPath, ["-t", transformPath, targetDir], {
+  let type = process.argv[2];
+  let targetDir = process.argv[3];
+  spawn(binPath, ["-t", transformPath, targetDir, type], {
     stdio: "inherit",
     env: process.env
   });

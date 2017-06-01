@@ -22,14 +22,15 @@ running this tool.
 ```bash
 npm install -g ember-native-dom-helpers-codemod
 cd my-ember-app-or-addon
-ember-native-dom-helpers-codemod tests/integration
+ember-native-dom-helpers-codemod --type=integration tests/integration
+ember-native-dom-helpers-codemod --type=acceptance tests/acceptance
 ```
 
 ## Transformations
 
 ### Integrations tests
 
-This addon will perform the following transformations:
+This addon will perform the following transformations suitable for integration tests:
 
 | Before                                               | After                                                                 | Transform      |
 |------------------------------------------------------|-----------------------------------------------------------------------|----------------|
@@ -59,6 +60,30 @@ jscodeshift -t ../ember-native-dom-helpers-codemod/lib/transforms/click.js tests
 
 ### Acceptance tests
 
-*The codemod does not cover acceptance tests yet*
+These transformations are available for acceptance tests:
+
+| Before                                               | After                                                                 | Transform      |
+|------------------------------------------------------|-----------------------------------------------------------------------|----------------|
+| `find('.foo').attr('id')`                            | `find('.foo').id`                                                     | `attr.js`      |
+| `find('.foo').attr('data-test')`                     | `find('.foo').getAttribute('data-test')`                              | `attr.js`      |
+| `click('.foo')`                                      | `await click('.foo')`                                                 | `click.js`     |
+| `fillIn('#bar', 'baz')`                              | `await fillIn('#bar', 'baz')`                                         | `fill-in.js`   |
+| `triggerEvent('input', 'focus')`                     | `await focus('.foo')`                                                 | `trigger-event.js`     |
+| `triggerEvent('input', 'blur')`                      | `await blur('.foo')`                                                  | `trigger-event.js`     |
+| `triggerEvent('input', 'mouseenter')`                | `await triggerEvent('input', 'mouseenter')`                           | `trigger-event.js`     |
+| `find('.foo').val()`                                 | `find('.foo').value`                                                  | `get-value.js` |
+| `find('div').hasClass('foo')`                        | `find('div').classList.contains('foo')`                               | `has-class.js` |
+| `keyEvent('#bar', 'keypress', 13);`                  | `await keyEvent('.foo', 'keydown', 13)`                               | `key-event.js` |
+| `find('.foo').length`                                | `findAll('.foo').length`                                              | `length.js`    |
+| `find('.foo').prop('tagName')`                       | `find('.foo').tagName`                                                | `prop.js`      |
+| `find('.foo').text()`                                | `find('.foo').textContent`                                            | `text.js`      |
+| `find('.foo').html()`                                | `find('.foo').innerHTML`                                              | `html.js`      |
+
+
+If you want to run only selected transforms on your code, you can just the needed transform:
+
+```bash
+jscodeshift -t ../ember-native-dom-helpers-codemod/lib/transforms/click.js tests/integration
+```
 
 
