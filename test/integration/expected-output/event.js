@@ -21,5 +21,6 @@ test('it renders', async function(assert) {
   await triggerEvent('.foo', 'mouseover');
   await triggerEvent('.foo', 'mouseup');
   await triggerEvent('.foo', 'input');
+  await click('.foo');
   assert.ok(true);
 });

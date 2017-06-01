@@ -20,5 +20,6 @@ test('it renders', function(assert) {
   this.$('.foo').mouseover();
   this.$('.foo').mouseup();
   this.$('.foo').trigger('input');
+  this.$('.foo').trigger('click');
   assert.ok(true);
 });
