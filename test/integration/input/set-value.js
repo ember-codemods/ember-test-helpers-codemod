@@ -12,6 +12,9 @@ test('it renders', function(assert) {
   this.$('.foo').val('foo');
   this.$('.foo').val('bar').change();
   this.$('.foo').val('baz').trigger('input');
+  Ember.run(() => this.$('select').val('1'));
   Ember.run(() => this.$('select').val('1').trigger('change'));
+  Ember.run(() => this.$('#odd').val(10).trigger('input').trigger('blur'));
+  this.$('#odd').val(10).trigger('input').trigger('blur');
   assert.ok(true);
 });

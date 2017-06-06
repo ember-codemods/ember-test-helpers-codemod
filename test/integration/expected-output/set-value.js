@@ -14,6 +14,9 @@ test('it renders', async function(assert) {
   await fillIn('.foo', 'bar');
   await blur('.foo');
   await fillIn('.foo', 'baz');
+  Ember.run(async () => await fillIn('select', '1'));
   Ember.run(() => this.$('select').val('1').trigger('change'));
+  Ember.run(() => this.$('#odd').val(10).trigger('input').trigger('blur'));
+  this.$('#odd').val(10).trigger('input').trigger('blur');
   assert.ok(true);
 });
