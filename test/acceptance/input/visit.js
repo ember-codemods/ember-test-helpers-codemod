@@ -9,3 +9,8 @@ test('visiting /foo', function(assert) {
     assert.equal(currentURL(), '/foo');
   });
 });
+
+test('visiting /bar', async function(assert) {
+  await visit('/bar');
+  assert.equal(currentURL(), '/bar');
+});
