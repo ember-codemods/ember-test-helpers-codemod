@@ -4,6 +4,7 @@
   "description": "Codemod to transform your jQuery based ember tests to use ember-native-dom-helpers",
   "main": "index.js",
   "author": "Simon Ihmig <ihmig@kaliber5.de>",
+  "repository": "https://github.com/simonihmig/ember-native-dom-helpers-codemod",
   "license": "MIT",
   "bin": "./bin/ember-native-dom-helpers-codemod.js",
   "scripts": {
