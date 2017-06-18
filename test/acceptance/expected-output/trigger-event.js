@@ -1,4 +1,4 @@
-import { blur, focus, triggerEvent, visit } from 'ember-native-dom-helpers';
+import { currentURL, blur, focus, triggerEvent, visit } from 'ember-native-dom-helpers';
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 
