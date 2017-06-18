@@ -7,4 +7,12 @@ test('visiting /twiddles', function(assert) {
   andThen(function() {
     click('.foo');
   });
+
+  andThen(function() {
+    andThen(function() {
+      andThen(function() {
+        click('.foo');
+      });
+    });
+  });
 });

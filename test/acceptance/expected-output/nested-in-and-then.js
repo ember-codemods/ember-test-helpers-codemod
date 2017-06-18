@@ -6,4 +6,6 @@ moduleForAcceptance('find');
 
 test('visiting /twiddles', async function(assert) {
   await click('.foo');
+
+  await click('.foo');
 });
