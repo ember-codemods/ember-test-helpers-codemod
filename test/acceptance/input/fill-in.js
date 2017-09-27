@@ -7,6 +7,7 @@ test('visiting /foo', function(assert) {
   visit('/foo');
 
   fillIn('#bar', 'baz');
+  fillIn('#qux input:eq(5)', 'qaaz');
   andThen(function() {
     assert.equal(currentURL(), '/foo');
   });

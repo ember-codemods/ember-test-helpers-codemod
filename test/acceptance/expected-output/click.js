@@ -1,4 +1,4 @@
-import { click, currentURL, visit } from 'ember-native-dom-helpers';
+import { click, currentURL, findAll, visit } from 'ember-native-dom-helpers';
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 
@@ -8,5 +8,6 @@ test('visiting /foo', async function(assert) {
   await visit('/foo');
 
   await click('#bar');
+  await click(findAll('.baz a')[12]);
   assert.equal(currentURL(), '/foo');
 });

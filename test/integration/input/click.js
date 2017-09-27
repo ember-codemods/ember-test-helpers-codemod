@@ -9,5 +9,7 @@ test('it renders', function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
   this.$('.foo').click();
+  this.$('.baz a:eq(0)').click();
+  this.$('.foo .bar:eq(3)').click();
   assert.ok(true);
 });
