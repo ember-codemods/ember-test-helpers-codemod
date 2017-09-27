@@ -9,7 +9,6 @@ moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
 test('it renders', function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
-  assert.ok(this.$('.foo:eq(0)').length);
   assert.ok(this.$('.foo:even').length);
   assert.ok(this.$('.foo:odd').length);
   assert.ok(this.$('.foo:contains(foo)').length);
@@ -34,6 +33,8 @@ test('it renders', function(assert) {
   assert.ok(this.$('.foo:text').length);
   assert.ok(this.$('.foo:visible').length);
 
+  assert.ok(findAll(find('.foo')).length);
+  assert.ok(findAll('.foo')[1].length);
   assert.ok(findAll('.foo:first-child').length);
   assert.ok(findAll('.foo:last-child').length);
 });

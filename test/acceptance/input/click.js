@@ -7,6 +7,7 @@ test('visiting /foo', function(assert) {
   visit('/foo');
 
   click('#bar');
+  click('.baz a:eq(12)');
   andThen(function() {
     assert.equal(currentURL(), '/foo');
   });
