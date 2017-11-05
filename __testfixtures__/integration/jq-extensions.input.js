@@ -1,5 +1,8 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import JQEXTENSION_SELECTOR_AS_IMPORTED_CONST from './constants';
+
+const JQEXTENSION_SELECTOR_AS_LOCAL_CONST = '.foo:first';
 
 moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
   integration: true
@@ -31,9 +34,11 @@ test('it renders', function(assert) {
   assert.ok(this.$('.foo:submit').length);
   assert.ok(this.$('.foo:text').length);
   assert.ok(this.$('.foo:visible').length);
+  assert.ok(this.$(JQEXTENSION_SELECTOR_AS_LOCAL_CONST).length);
 
   assert.ok(this.$('.foo:eq(0)').length);
   assert.ok(this.$('.foo:eq(1)').length);
   assert.ok(this.$('.foo:first-child').length);
   assert.ok(this.$('.foo:last-child').length);
+  assert.ok(this.$(JQEXTENSION_SELECTOR_AS_IMPORTED_CONST).length);
 });
