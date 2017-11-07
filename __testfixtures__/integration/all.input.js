@@ -8,7 +8,7 @@ moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
 
 function fillInHelper(value) {
   this.$('.foo input').val(value);
-  this.$(`.foo input`).change();
+  this.$('.foo input').change();
 }
 
 test('it renders', async function(assert) {

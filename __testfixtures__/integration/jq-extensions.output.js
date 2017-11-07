@@ -38,12 +38,12 @@ test('it renders', function(assert) {
   assert.ok(this.$('.foo:text').length);
   assert.ok(this.$('.foo:visible').length);
   assert.ok(this.$(JQEXTENSION_SELECTOR_AS_LOCAL_CONST).length);
-  assert.ok(this.$(ANY_SELECTOR_AS_IMPORTED_CONST).length);  
+  assert.ok(this.$(ANY_SELECTOR_AS_IMPORTED_CONST).length);
 
   assert.ok(findAll(find('.foo')).length);
   assert.ok(findAll('.foo')[1].length);
   assert.ok(findAll('.foo:first-child').length);
   assert.ok(findAll('.foo:last-child').length);
   assert.ok(findAll(NORMAL_SELECTOR).length);
-  assert.ok(findAll(NORMAL_PSEUDO_SELECTOR).length);
+  assert.ok(this.$(NORMAL_PSEUDO_SELECTOR).length);
 });

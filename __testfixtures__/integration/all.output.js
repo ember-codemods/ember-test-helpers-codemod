@@ -8,7 +8,7 @@ moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
 
 async function fillInHelper(value) {
   await fillIn('.foo input', value);
-  await triggerEvent(`.foo input`, 'change');
+  await triggerEvent('.foo input', 'change');
 }
 
 test('it renders', async function(assert) {
