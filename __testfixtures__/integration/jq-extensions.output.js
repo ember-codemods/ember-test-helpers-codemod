@@ -1,6 +1,11 @@
 import { findAll } from 'ember-native-dom-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import ANY_SELECTOR_AS_IMPORTED_CONST from './constants';
+
+const JQEXTENSION_SELECTOR_AS_LOCAL_CONST = '.foo:first';
+const NORMAL_SELECTOR = '.foo';
+const NORMAL_PSEUDO_SELECTOR = '.foo:eq(0)';
 
 moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
   integration: true
@@ -32,9 +37,13 @@ test('it renders', function(assert) {
   assert.ok(this.$('.foo:submit').length);
   assert.ok(this.$('.foo:text').length);
   assert.ok(this.$('.foo:visible').length);
+  assert.ok(this.$(JQEXTENSION_SELECTOR_AS_LOCAL_CONST).length);
+  assert.ok(this.$(ANY_SELECTOR_AS_IMPORTED_CONST).length);
 
   assert.ok(findAll(find('.foo')).length);
   assert.ok(findAll('.foo')[1].length);
   assert.ok(findAll('.foo:first-child').length);
   assert.ok(findAll('.foo:last-child').length);
+  assert.ok(findAll(NORMAL_SELECTOR).length);
+  assert.ok(this.$(NORMAL_PSEUDO_SELECTOR).length);
 });
