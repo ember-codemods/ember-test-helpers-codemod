@@ -51,6 +51,7 @@ This addon will perform the following transformations suitable for integration t
 | `this.$('.foo').val('bar').trigger('input')`         | `await fillIn('.foo', 'foo')`                                         | `set-value.js` |
 | `this.$('.foo').text()`                              | `find('.foo').textContent`                                            | `text.js`      |
 | `this.$('.foo').html()`                              | `find('.foo').innerHTML`                                              | `html.js`      |
+| `this.$('.foo').html('foo')`                         | `find('.foo').innerHTML = 'foo'`                                      | `html.js`      |
 
 
 If you want to run only selected transforms on your code, you can just the needed transform:
@@ -79,7 +80,7 @@ These transformations are available for acceptance tests:
 | `find('.foo').prop('tagName')`                       | `find('.foo').tagName`                                                | `prop.js`      |
 | `find('.foo').text()`                                | `find('.foo').textContent`                                            | `text.js`      |
 | `find('.foo').html()`                                | `find('.foo').innerHTML`                                              | `html.js`      |
-
+| `find('.foo').html('foo')`                           | `find('.foo').innerHTML = 'foo'`                                      | `html.js`      |
 
 If you want to run only selected transforms on your code, you can just the needed transform:
 
