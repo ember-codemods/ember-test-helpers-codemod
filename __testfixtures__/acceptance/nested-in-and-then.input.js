@@ -21,7 +21,7 @@ test('visiting /twiddles', function(assert) {
   });
 
   andThen(() => {
-    assert.ok(true)
+    assert.ok(true);
   });
 
   andThen(() => assert.ok(true));
