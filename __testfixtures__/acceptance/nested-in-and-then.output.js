@@ -8,4 +8,10 @@ test('visiting /twiddles', async function(assert) {
   await click('.foo');
 
   await click('.foo');
+
+  await click('.foo');
+
+  assert.ok(true);
+
+  assert.ok(true);
 });
