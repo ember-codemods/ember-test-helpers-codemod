@@ -8,6 +8,10 @@ test('visiting /twiddles', function(assert) {
     click('.foo');
   });
 
+  andThen(() => {
+    click('.foo');
+  });
+
   andThen(function() {
     andThen(function() {
       andThen(function() {
@@ -15,4 +19,10 @@ test('visiting /twiddles', function(assert) {
       });
     });
   });
+
+  andThen(() => {
+    assert.ok(true)
+  });
+
+  andThen(() => assert.ok(true));
 });
