@@ -13,5 +13,5 @@ test('it renders', function(assert) {
 
   find('.bar').innerHTML = 'bar';
 
-  assert.equal(find('.bar').innerHTML, 'bar');
+  assert.equal(find('.bar').innerHTML.trim(), 'bar');
 });

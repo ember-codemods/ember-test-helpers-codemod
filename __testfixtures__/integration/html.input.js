@@ -12,5 +12,5 @@ test('it renders', function(assert) {
 
   this.$('.bar').html('bar');
 
-  assert.equal(this.$('.bar').html(), 'bar');
+  assert.equal(this.$('.bar').html().trim(), 'bar');
 });
