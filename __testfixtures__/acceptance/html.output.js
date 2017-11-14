@@ -6,4 +6,8 @@ moduleForAcceptance('find');
 
 test('visiting /foo', function(assert) {
   assert.equal(find('.foo').innerHTML.trim(), '');
+
+  find('.foo').innerHTML = 'bar';
+
+  assert.equal(find('.foo').innerHTML.trim(), 'bar');
 });

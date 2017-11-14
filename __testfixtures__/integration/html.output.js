@@ -10,4 +10,8 @@ test('it renders', function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
   assert.equal(find('.foo').innerHTML.trim(), '');
+
+  find('.bar').innerHTML = 'bar';
+
+  assert.equal(find('.bar').innerHTML, 'bar');
 });
