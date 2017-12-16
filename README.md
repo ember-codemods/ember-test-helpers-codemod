@@ -52,6 +52,7 @@ This addon will perform the following transformations suitable for integration t
 | `this.$('.foo').text()`                              | `find('.foo').textContent`                                            | `text.js`      |
 | `this.$('.foo').html()`                              | `find('.foo').innerHTML`                                              | `html.js`      |
 | `this.$('.foo').html('foo')`                         | `find('.foo').innerHTML = 'foo'`                                      | `html.js`      |
+| `this.$('.foo').each((index, elem) => {...})`        | `findAll('.foo').forEach((elem, index) => {...})`                     | `each.js`      |
 
 
 If you want to run only selected transforms on your code, you can just the needed transform:
@@ -81,6 +82,7 @@ These transformations are available for acceptance tests:
 | `find('.foo').text()`                                | `find('.foo').textContent`                                            | `text.js`      |
 | `find('.foo').html()`                                | `find('.foo').innerHTML`                                              | `html.js`      |
 | `find('.foo').html('foo')`                           | `find('.foo').innerHTML = 'foo'`                                      | `html.js`      |
+| `find('.foo').each((index, elem) => {...})`          | `findAll('.foo').forEach((elem, index) => {...})`                     | `each.js`      |
 
 If you want to run only selected transforms on your code, you can just the needed transform:
 
