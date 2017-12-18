@@ -1,6 +1,6 @@
 {
   "name": "ember-native-dom-helpers-codemod",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Codemod to transform your jQuery based ember tests to use ember-native-dom-helpers",
   "main": "index.js",
   "author": "Simon Ihmig <ihmig@kaliber5.de>",
