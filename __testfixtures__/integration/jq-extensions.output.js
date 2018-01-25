@@ -33,7 +33,7 @@ test('it renders', function(assert) {
   assert.ok(this.$('.foo:password').length);
   assert.ok(this.$('.foo:radio').length);
   assert.ok(this.$('.foo:reset').length);
-  assert.ok(this.$('.foo:selected').length);
+  assert.ok(findAll('.foo:checked').length);
   assert.ok(this.$('.foo:submit').length);
   assert.ok(this.$('.foo:text').length);
   assert.ok(this.$('.foo:visible').length);
