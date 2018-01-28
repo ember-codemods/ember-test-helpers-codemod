@@ -1,4 +1,4 @@
-import { click, find, findAll, fillIn, blur, triggerEvent } from 'ember-native-dom-helpers';
+import { click, find, findAll, fillIn, blur, triggerEvent } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 

@@ -1,4 +1,4 @@
-import { keyEvent } from 'ember-native-dom-helpers';
+import { keyEvent } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 

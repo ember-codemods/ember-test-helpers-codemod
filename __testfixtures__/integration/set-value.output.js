@@ -1,4 +1,4 @@
-import { fillIn, blur } from 'ember-native-dom-helpers';
+import { fillIn, blur } from '@ember/test-helpers';
 import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';

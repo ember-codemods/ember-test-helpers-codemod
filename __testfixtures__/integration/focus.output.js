@@ -1,4 +1,4 @@
-import { focus } from 'ember-native-dom-helpers';
+import { focus } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 

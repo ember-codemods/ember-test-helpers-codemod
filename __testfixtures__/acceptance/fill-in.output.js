@@ -1,4 +1,4 @@
-import { fillIn, currentURL, findAll, visit } from 'ember-native-dom-helpers';
+import { fillIn, currentURL, findAll, visit } from '@ember/test-helpers';
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 

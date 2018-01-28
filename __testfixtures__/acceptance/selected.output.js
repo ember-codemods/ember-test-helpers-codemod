@@ -1,4 +1,4 @@
-import { find, findAll } from 'ember-native-dom-helpers';
+import { find, findAll } from '@ember/test-helpers';
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 
