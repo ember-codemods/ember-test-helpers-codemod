@@ -1,8 +1,8 @@
-# ember-native-dom-helpers-codemod
+# ember-test-helpers-codemod
 
-[![Build Status](https://travis-ci.org/simonihmig/ember-native-dom-helpers-codemod.svg?branch=master)](https://travis-ci.org/simonihmig/ember-native-dom-helpers-codemod)
+[![Build Status](https://travis-ci.org/simonihmig/ember-test-helpers-codemod.svg?branch=master)](https://travis-ci.org/simonihmig/ember-test-helpers-codemod)
 
-A [jscodeshift](https://github.com/facebook/jscodeshift) based codemod to help migrating your jQuery based Ember tests to [ember-native-dom-helpers](https://github.com/cibernox/ember-native-dom-helpers).
+A [jscodeshift](https://github.com/facebook/jscodeshift) based codemod to help migrating your jQuery based Ember tests to [@ember/test-helpers](https://github.com/emberjs/ember-test-helpers).
 
 *Please note that this will not be able to cover all possible cases how jQuery based tests can be written.
 Given the dynamic nature of JavaScript and the extensive API and fluent interface of jQuery, this would be impossible.
@@ -20,10 +20,10 @@ repository like Git and that you have no outstanding changes to commit before
 running this tool.
 
 ```bash
-npm install -g ember-native-dom-helpers-codemod
+npm install -g ember-test-helpers-codemod
 cd my-ember-app-or-addon
-ember-native-dom-helpers-codemod --type=integration tests/integration
-ember-native-dom-helpers-codemod --type=acceptance tests/acceptance
+ember-test-helpers-codemod --type=integration tests/integration
+ember-test-helpers-codemod --type=acceptance tests/acceptance
 ```
 
 ## Transformations
@@ -58,7 +58,7 @@ This addon will perform the following transformations suitable for integration t
 If you want to run only selected transforms on your code, you can just the needed transform:
 
 ```bash
-jscodeshift -t ../ember-native-dom-helpers-codemod/lib/transforms/click.js tests/integration
+jscodeshift -t ../ember-test-helpers-codemod/lib/transforms/click.js tests/integration
 ```
 
 ### Acceptance tests
@@ -87,7 +87,7 @@ These transformations are available for acceptance tests:
 If you want to run only selected transforms on your code, you can just the needed transform:
 
 ```bash
-jscodeshift -t ../ember-native-dom-helpers-codemod/lib/transforms/click.js tests/integration
+jscodeshift -t ../ember-test-helpers-codemod/lib/transforms/click.js tests/integration
 ```
 
 
