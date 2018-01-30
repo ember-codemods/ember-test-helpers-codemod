@@ -1,4 +1,4 @@
-import { findAll, click } from '@ember/test-helpers';
+import { click } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -11,6 +11,6 @@ test('it renders', async function(assert) {
 
   await click('.foo');
   await click('.baz a');
-  await click(findAll('.foo .bar')[3]);
+  await click(this.element.querySelectorAll('.foo .bar')[3]);
   assert.ok(true);
 });

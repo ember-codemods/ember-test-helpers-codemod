@@ -1,4 +1,3 @@
-import { findAll } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -9,7 +8,7 @@ moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
 test('anonymous function callback with two args', function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
-  const elemIds = findAll('.button-class').forEach((val, i) => {
+  const elemIds = this.element.querySelectorAll('.button-class').forEach((val, i) => {
     assert.equal(element.id, `button${index}`);
   });
 });
@@ -17,7 +16,7 @@ test('anonymous function callback with two args', function(assert) {
 test('anonymous function callback with one arg', function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
-  const elemIds = findAll('.button-class').forEach((element, index) => {
+  const elemIds = this.element.querySelectorAll('.button-class').forEach((element, index) => {
     assert.equal(element.id, `button${index}`);
   });
 });
@@ -25,7 +24,7 @@ test('anonymous function callback with one arg', function(assert) {
 test('function callback with two args', function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
-  const elemIds = findAll('.button-class').forEach(function(element, index) {
+  const elemIds = this.element.querySelectorAll('.button-class').forEach(function(element, index) {
     assert.equal(element.id, `button${index}`);
   });
 });
@@ -33,7 +32,7 @@ test('function callback with two args', function(assert) {
 test('function callback with one arg', function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
-  const elemIds = findAll('.button-class').forEach((element, index) => {
+  const elemIds = this.element.querySelectorAll('.button-class').forEach((element, index) => {
     assert.equal(element.id, `button${index}`);
   });
 });
