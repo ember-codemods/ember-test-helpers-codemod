@@ -1,10 +1,9 @@
-import { find } from '@ember/test-helpers';
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 
 moduleForAcceptance('find');
 
 test('visiting /foo', function(assert) {
-  assert.equal(find('.foo').id, 'foo');
-  assert.equal(find('.foo').getAttribute('data-test'), 'foo');
+  assert.equal(this.element.querySelector('.foo').id, 'foo');
+  assert.equal(this.element.querySelector('.foo').getAttribute('data-test'), 'foo');
 });

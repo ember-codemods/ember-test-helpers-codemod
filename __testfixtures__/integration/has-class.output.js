@@ -1,4 +1,3 @@
-import { find } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -9,5 +8,5 @@ moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
 test('it renders', function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
-  assert.ok(find('div').classList.contains('foo'));
+  assert.ok(this.element.querySelector('div').classList.contains('foo'));
 });
