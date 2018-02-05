@@ -24,6 +24,7 @@ npm install -g ember-test-helpers-codemod
 cd my-ember-app-or-addon
 ember-test-helpers-codemod --type=integration tests/integration
 ember-test-helpers-codemod --type=acceptance tests/acceptance
+ember-test-helpers-codemod --type=native-dom tests
 ```
 
 ## Transformations
@@ -55,10 +56,10 @@ This addon will perform the following transformations suitable for integration t
 | `this.$('.foo').each((index, elem) => {...})`        | `this.element.querySelectorAll('.foo').forEach((elem, index) => {...})`                     | `each.js`      |
 
 
-If you want to run only selected transforms on your code, you can just the needed transform:
+If you want to run only selected transforms on your code, you can pick just the needed transform:
 
 ```bash
-jscodeshift -t ../ember-test-helpers-codemod/lib/transforms/click.js tests/integration
+jscodeshift -t ../ember-test-helpers-codemod/lib/transforms/integration/click.js tests/integration
 ```
 
 ### Acceptance tests
@@ -84,10 +85,26 @@ These transformations are available for acceptance tests:
 | `find('.foo').html('foo')`                           | `this.element.querySelector('.foo').innerHTML = 'foo'`                                      | `html.js`      |
 | `find('.foo').each((index, elem) => {...})`          | `this.element.querySelectorAll('.foo').forEach((elem, index) => {...})`                     | `each.js`      |
 
-If you want to run only selected transforms on your code, you can just the needed transform:
+If you want to run only selected transforms on your code, you can pick just the needed transform:
 
 ```bash
-jscodeshift -t ../ember-test-helpers-codemod/lib/transforms/click.js tests/integration
+jscodeshift -t ../ember-test-helpers-codemod/lib/transforms/acceptance/click.js tests/integration
+```
+
+### ember-native-dom-helpers tests
+
+These transformations are available tests based on `ember-native-dom-helpers`:
+
+| Before                                | After                                         | Transform      |
+|---------------------------------------|-----------------------------------------------|----------------|
+| `find('.foo')`                        | `this.element.querySelector('.foo')`          | `find.js`      |
+| `findAll('.foo')`                     | `this.element.querySelectorAll('.foo')`       | `find.js`      |
+| ```import { click, find, findAll, fillIn, focus, blur, triggerEvent, keyEvent, waitFor, waitUntil } from 'ember-native-dom-helpers';``` | ```import { click, find, findAll, fillIn, focus, blur, triggerEvent, triggerKeyEvent, waitFor, waitUntil } from '@ember/test-helpers';``` | `migrate-imports.js`     |
+
+If you want to run only selected transforms on your code, you can pick just the needed transform:
+
+```bash
+jscodeshift -t ../ember-test-helpers-codemod/lib/transforms/native-dom/find.js tests/integration
 ```
 
 
