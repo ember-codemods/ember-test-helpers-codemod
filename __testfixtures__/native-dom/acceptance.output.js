@@ -1,5 +1,5 @@
 import { currentURL, currentRouteName, visit } from '@ember/test-helpers';
-import { currentPath } from 'ember-native-dom-test-helpers';
+import { currentPath } from 'ember-native-dom-helpers';
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 
