@@ -1,4 +1,4 @@
-import { click, fillIn, focus, blur, triggerEvent, triggerKeyEvent, waitFor, waitUntil } from '@ember/test-helpers';
+import { click, find, findAll, fillIn, focus, blur, triggerEvent, triggerKeyEvent, waitFor, waitUntil } from '@ember/test-helpers';
 import { findWithAssert, scrollTo, selectFiles } from 'ember-native-dom-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
@@ -11,19 +11,19 @@ test('it renders', async function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
   await click('.foo', {});
-  assert.equal(this.element.querySelector('.foo').id, 'foo');
+  assert.equal(find('.foo').id, 'foo');
   await fillIn('.foo input', 'bar');
   await blur('.foo input');
-  assert.equal(this.element.querySelector('.foo').textContent.trim(), 'foo');
+  assert.equal(find('.foo').textContent.trim(), 'foo');
 });
 
 test('it renders again', function(assert) {
   this.render(hbs`{{foo-bar}}`);
 
   let selector = '.foo input';
-  assert.equal(this.element.querySelectorAll(selector).length, 1);
-  assert.equal(this.element.querySelector(selector).value, 'foo');
-  assert.ok(this.element.querySelector('.foo').classList.contains('selected'));
+  assert.equal(findAll(selector).length, 1);
+  assert.equal(find(selector).value, 'foo');
+  assert.ok(find('.foo').classList.contains('selected'));
 });
 
 test('and again', async function(assert) {
@@ -39,7 +39,7 @@ test('and again', async function(assert) {
   await focus('.foo input');
   await blur('.foo input');
 
-  assert.ok(this.element.querySelectorAll('.baz')[1].classList.contains('selected'));
+  assert.ok(findAll('.baz')[1].classList.contains('selected'));
 });
 
 test('and yet again', async function(assert) {
@@ -47,7 +47,7 @@ test('and yet again', async function(assert) {
 
   await scrollTo(document, 10, 20);
   await selectFiles('input[type=file]', [new Blob(['texters'], { type: 'plain/text' })]);
-  await waitUntil(() => this.element.querySelector('.foo.active'));
+  await waitUntil(() => find('.foo.active'));
   await waitFor('.bar.selected');
   assert.ok(true);
 });
