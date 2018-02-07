@@ -95,7 +95,7 @@ jscodeshift -t ../ember-test-helpers-codemod/lib/transforms/acceptance/click.js 
 
 ### ember-native-dom-helpers tests
 
-These transformations are available tests based on `ember-native-dom-helpers`:
+These transformations are available for tests based on `ember-native-dom-helpers`:
 
 | Before                                | After                   | Transform      |
 |---------------------------------------|-------------------------|----------------|
