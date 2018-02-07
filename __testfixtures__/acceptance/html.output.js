@@ -1,12 +1,13 @@
+import { find } from '@ember/test-helpers';
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 
 moduleForAcceptance('find');
 
 test('visiting /foo', function(assert) {
-  assert.equal(this.element.querySelector('.foo').innerHTML.trim(), '');
+  assert.equal(find('.foo').innerHTML.trim(), '');
 
-  this.element.querySelector('.foo').innerHTML = 'bar';
+  find('.foo').innerHTML = 'bar';
 
-  assert.equal(this.element.querySelector('.foo').innerHTML.trim(), 'bar');
+  assert.equal(find('.foo').innerHTML.trim(), 'bar');
 });

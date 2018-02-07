@@ -1,4 +1,4 @@
-import { click, currentURL, visit } from '@ember/test-helpers';
+import { click, currentURL, findAll, visit } from '@ember/test-helpers';
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 
@@ -8,6 +8,6 @@ test('visiting /foo', async function(assert) {
   await visit('/foo');
 
   await click('#bar');
-  await click(this.element.querySelectorAll('.baz a')[12]);
+  await click(findAll('.baz a')[12]);
   assert.equal(currentURL(), '/foo');
 });
