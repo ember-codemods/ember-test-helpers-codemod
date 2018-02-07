@@ -60,7 +60,7 @@ This addon will perform the following transformations suitable for integration t
 If you want to run only selected transforms on your code, you can pick just the needed transform:
 
 ```bash
-jscodeshift -t ../ember-test-helpers-codemod/lib/transforms/integration/click.js tests/integration
+jscodeshift -t path/to/ember-test-helpers-codemod/lib/transforms/integration/click.js tests/integration
 ```
 
 ### Acceptance tests
@@ -104,7 +104,24 @@ These transformations are available for tests based on `ember-native-dom-helpers
 If you want to run only selected transforms on your code, you can pick just the needed transform:
 
 ```bash
-jscodeshift -t ../ember-test-helpers-codemod/lib/transforms/native-dom/find.js tests/integration
+jscodeshift -t path/to/ember-test-helpers-codemod/lib/transforms/native-dom/find.js tests/integration
 ```
 
+### Replace find/findAll
 
+By default this codemod will use the `find()` and `findAll()` helpers from `@ember/test-helpers` where required. 
+If you want to use the native query functions `this.element.querySelector()` / `this.element.querySelectorAll()` instead, 
+you can use the `find.js` transform after you have run the other transformations:
+
+```bash
+jscodeshift -t path/to/ember-test-helpers-codemod/lib/transforms/find.js tests
+```
+
+| Before               | After                                   | Transform      |
+|----------------------|-----------------------------------------|----------------|
+| `find('.foo')`       | `this.element.querySelector('.foo')`    | `find.js`      |
+| `findAll('.foo')`    | `this.element.querySelectorAll('.foo')` | `find.js`      |
+
+Note that this will require all instances of `find`/`findAll` to have the correct `this` context, otherwise you will run
+into `Cannot read property 'querySelector' of undefined` exceptions, as `this.element` will not be defined. This can 
+happen outside of the main `test` function, for example inside of custom test helper functions.
