@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const spawn = require("child_process").spawn;
+const execa = require("execa");
 const chalk = require("chalk");
 const path = require("path");
 
@@ -9,7 +9,7 @@ try {
   let transformPath = __dirname + "/../index.js";
   let type = process.argv[2];
   let targetDir = process.argv[3];
-  spawn(binPath, ["-t", transformPath, targetDir, type], {
+  execa(binPath, ["-t", transformPath, targetDir, type], {
     stdio: "inherit",
     env: process.env
   });
