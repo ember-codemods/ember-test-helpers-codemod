@@ -1,8 +1,10 @@
 # ember-test-helpers-codemod
 
 [![Build Status](https://travis-ci.org/simonihmig/ember-test-helpers-codemod.svg?branch=master)](https://travis-ci.org/simonihmig/ember-test-helpers-codemod)
+[![npm version](https://badge.fury.io/js/ember-test-helpers-codemod.svg)](https://badge.fury.io/js/ember-test-helpers-codemod)
 
-A [jscodeshift](https://github.com/facebook/jscodeshift) based codemod to help migrating your jQuery based Ember tests to [@ember/test-helpers](https://github.com/emberjs/ember-test-helpers).
+A [jscodeshift](https://github.com/facebook/jscodeshift) based codemod to help migrating your jQuery or 
+`ember-native-dom-helpers` based Ember tests to [`@ember/test-helpers`](https://github.com/emberjs/ember-test-helpers).
 
 *Please note that this will not be able to cover all possible cases how jQuery based tests can be written.
 Given the dynamic nature of JavaScript and the extensive API and fluent interface of jQuery, this would be impossible.
@@ -14,7 +16,7 @@ So it is likely that you will have to manually migrate some usages this tool can
 **This package requires Node 6 or later. Make sure you are using a newer version
 of Node before installing and running this package.**
 
-**WARNING**: `jscodeshift`, and thus this codemod, **edit your files in place**.
+**WARNING**: `jscodeshift`, and thus this codemod, **edits your files in place**.
 It does not make a copy. Make sure your code is checked into a source control
 repository like Git and that you have no outstanding changes to commit before
 running this tool.
@@ -101,11 +103,6 @@ These transformations are available for tests based on `ember-native-dom-helpers
 |---------------------------------------|-------------------------|----------------|
 | ```import { click, find, findAll, fillIn, focus, blur, triggerEvent, keyEvent, waitFor, waitUntil } from 'ember-native-dom-helpers';``` | ```import { click, find, findAll, fillIn, focus, blur, triggerEvent, triggerKeyEvent, waitFor, waitUntil } from '@ember/test-helpers';``` | `migrate-imports.js`     |
 
-If you want to run only selected transforms on your code, you can pick just the needed transform:
-
-```bash
-jscodeshift -t path/to/ember-test-helpers-codemod/lib/transforms/native-dom/find.js tests/integration
-```
 
 ### Replace find/findAll
 
