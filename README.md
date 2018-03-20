@@ -22,11 +22,10 @@ repository like Git and that you have no outstanding changes to commit before
 running this tool.
 
 ```bash
-npm install -g ember-test-helpers-codemod
 cd my-ember-app-or-addon
-ember-test-helpers-codemod --type=integration tests/integration
-ember-test-helpers-codemod --type=acceptance tests/acceptance
-ember-test-helpers-codemod --type=native-dom tests
+npx ember-test-helpers-codemod --type=integration tests/integration
+npx ember-test-helpers-codemod --type=acceptance tests/acceptance
+npx ember-test-helpers-codemod --type=native-dom tests
 ```
 
 ## Transformations
