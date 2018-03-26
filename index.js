@@ -1,3 +1,5 @@
+'use strict';
+
 const integrationPreset = require('./lib/presets/integration');
 const acceptancePreset = require('./lib/presets/acceptance');
 const nativeDomPreset = require('./lib/presets/native-dom');
