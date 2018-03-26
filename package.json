@@ -18,5 +18,8 @@
   "devDependencies": {
     "jest": "^21.2.1",
     "temp": "^0.8.3"
+  },
+  "engines": {
+    "node": ">= 4"
   }
 }
