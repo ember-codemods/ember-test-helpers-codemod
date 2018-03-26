@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+'use strict';
 
 const execa = require("execa");
 const chalk = require("chalk");
