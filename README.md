@@ -1,6 +1,7 @@
 # ember-test-helpers-codemod
 
 [![Build Status](https://travis-ci.org/simonihmig/ember-test-helpers-codemod.svg?branch=master)](https://travis-ci.org/simonihmig/ember-test-helpers-codemod)
+[![Build status](https://ci.appveyor.com/api/projects/status/fadn7iu9fl53qb6k/branch/master?svg=true)](https://ci.appveyor.com/project/simonihmig/ember-test-helpers-codemod/branch/master)
 [![npm version](https://badge.fury.io/js/ember-test-helpers-codemod.svg)](https://badge.fury.io/js/ember-test-helpers-codemod)
 
 A [jscodeshift](https://github.com/facebook/jscodeshift) based codemod to help migrating your jQuery or 
