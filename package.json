@@ -16,8 +16,9 @@
     "jscodeshift": "^0.3.30"
   },
   "devDependencies": {
+    "fs-extra": "^5.0.0",
     "jest": "^21.2.1",
-    "temp": "^0.8.3"
+    "tmp": "^0.0.33"
   },
   "engines": {
     "node": ">= 4"
