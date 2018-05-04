@@ -21,3 +21,8 @@ test('visiting /bar', async function(assert) {
   await visit('/bar');
   assert.equal(currentURL(), '/bar');
 });
+
+test('visiting /bar', async function(assert) {
+  await assert.rejects(visit('/bar'));
+  assert.equal(currentURL(), '/bar');
+});
