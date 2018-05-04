@@ -26,3 +26,9 @@ test('visiting /twiddles', function(assert) {
 
   andThen(() => assert.ok(true));
 });
+
+test('visiting /twiddles', function(assert) {
+  andThen(() => {
+    click('.foo');
+  });
+});
