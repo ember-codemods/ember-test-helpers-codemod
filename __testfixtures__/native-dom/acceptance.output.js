@@ -1,4 +1,4 @@
-import { currentURL, currentRouteName, find, visit } from '@ember/test-helpers';
+import { find, visit, currentURL, currentRouteName } from '@ember/test-helpers';
 import { currentPath } from 'ember-native-dom-helpers';
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
