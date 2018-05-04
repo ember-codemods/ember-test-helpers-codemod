@@ -15,3 +15,7 @@ test('visiting /twiddles', async function(assert) {
 
   assert.ok(true);
 });
+
+test('visiting /twiddles', async function(assert) {
+  await click('.foo');
+});
