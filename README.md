@@ -21,9 +21,9 @@ running this tool.
 
 ```bash
 cd my-ember-app-or-addon
-npx ember-test-helpers-codemod --type=integration tests/integration
-npx ember-test-helpers-codemod --type=acceptance tests/acceptance
-npx ember-test-helpers-codemod --type=native-dom tests
+npx ember-test-helpers-codemod integration tests/integration
+npx ember-test-helpers-codemod acceptance tests/acceptance
+npx ember-test-helpers-codemod native-dom tests
 ```
 
 ## Transformations
@@ -59,7 +59,7 @@ This addon will perform the following transformations suitable for integration t
 If you want to run only selected transforms on your code, you can pick just the needed transform:
 
 ```bash
-jscodeshift -t path/to/ember-test-helpers-codemod/lib/transforms/integration/click.js tests/integration
+jscodeshift -t path/to/ember-test-helpers-codemod/transforms/integration/transforms/click.js tests/integration
 ```
 
 ### Acceptance tests
@@ -89,7 +89,7 @@ These transformations are available for acceptance tests:
 If you want to run only selected transforms on your code, you can pick just the needed transform:
 
 ```bash
-jscodeshift -t ../ember-test-helpers-codemod/lib/transforms/acceptance/click.js tests/integration
+jscodeshift -t ../ember-test-helpers-codemod/transforms/acceptance/transforms/click.js tests/integration
 ```
 
 ### ember-native-dom-helpers tests
@@ -108,7 +108,7 @@ If you want to use the native query functions `this.element.querySelector()` / `
 you can use the `find.js` transform after you have run the other transformations:
 
 ```bash
-jscodeshift -t path/to/ember-test-helpers-codemod/lib/transforms/find.js tests
+npx ember-test-helpers-codemod find tests
 ```
 
 | Before               | After                                   | Transform      |
