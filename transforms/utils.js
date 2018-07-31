@@ -28,8 +28,8 @@ const jqExtensions = [
 ];
 
 const supportedJqExtensions = [
-  /:eq/,
-  /:selected/,
+  /.+:eq/,
+  /.+:selected/,
 ];
 
 const tailEqRegex = /:eq\(\d+\)$/;
