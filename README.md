@@ -98,8 +98,13 @@ These transformations are available for tests based on `ember-native-dom-helpers
 
 | Before                                | After                   | Transform      |
 |---------------------------------------|-------------------------|----------------|
-| ```import { click, find, findAll, fillIn, focus, blur, triggerEvent, keyEvent, waitFor, waitUntil } from 'ember-native-dom-helpers';``` | ```import { click, find, findAll, fillIn, focus, blur, triggerEvent, triggerKeyEvent, waitFor, waitUntil } from '@ember/test-helpers';``` | `migrate-imports.js`     |
-
+| ```import { click, find, findAll, fillIn, focus, blur, triggerEvent, keyEvent, waitFor, waitUntil } from 'ember-native-dom-helpers';``` | ```import { click, find, findAll, fillIn, focus, blur, triggerEvent, triggerKeyEvent, waitFor, waitUntil } from '@ember/test-helpers';``` |
+| `find('.foo', context)`                      | `context.querySelector('.foo')`                            |
+| `find('.foo', '.context')`                   | `find('.context .foo')`                                    |
+| `findAll('.foo', context)`                   | `context.querySelectorAll('.foo')`                         |
+| `click('.foo', context)`                     | `click(context.querySelector('.foo'))`                     |
+| `click('.foo', context, { shiftKey: true })` | `click(context.querySelector('.foo'), { shiftKey: true })` |
+ 
 
 ### Replace find/findAll
 

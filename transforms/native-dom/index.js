@@ -39,6 +39,69 @@ function renameCallee(j, root, name, newName) {
 }
 
 /**
+ * find(selector, context) => context.querySelector(selector)
+ * findAll(selector, context) => context.querySelectorAll(selector)
+ * click(selector, context) => click(context.querySelector(selector))
+ * click(selector, context, { ...options }) => click(context.querySelector(selector),  { ...options })
+ */
+function migrateHelpersWithContext(j, root, importedName) {
+  switch (importedName) {
+    case 'find':
+      root
+        .find(j.CallExpression, {
+          callee: {
+            name: 'find'
+          },
+          arguments: [ {}, {} ]
+        })
+        .replaceWith(({node}) => {
+          let [ selector, context ] = node.arguments;
+          if (selector.type === 'StringLiteral' && context.type === 'StringLiteral') {
+            return j.callExpression(j.identifier('find'), [ j.literal(`${context.value} ${selector.value}`) ]);
+          }
+          return j.callExpression(j.memberExpression(context, j.identifier('querySelector')), [ selector ])
+        });
+      break;
+    case 'findAll':
+      root
+        .find(j.CallExpression, {
+          callee: {
+            name: 'findAll'
+          },
+          arguments: [ {}, {} ]
+        })
+        .replaceWith(({node}) => {
+          let [ selector, context ] = node.arguments;
+          if (selector.type === 'StringLiteral' && context.type === 'StringLiteral') {
+            return j.callExpression(j.identifier('findAll'), [ j.literal(`${context.value} ${selector.value}`) ]);
+          }
+          return j.callExpression(j.memberExpression(context, j.identifier('querySelectorAll')), [ selector ])
+        });
+      break;
+    case 'click':
+      root
+        .find(j.CallExpression, {
+          callee: {
+            name: 'click'
+          },
+          arguments: [ {}, {} ] // matches 2 or 3 arguments
+        })
+        .replaceWith(({node}) => {
+          let [ selector, context, options ] = node.arguments;
+          if (context.type === 'ObjectExpression') {
+            // click(selector, { ...options })
+            return node;
+          }
+          if (selector.type === 'StringLiteral' && context.type === 'StringLiteral') {
+            return j.callExpression(j.identifier('click'), [ j.literal(`${context.value} ${selector.value}`) ]);
+          }
+          return j.callExpression(j.identifier('click'), [ j.callExpression(j.memberExpression(context, j.identifier('querySelector')), [ selector ]), options ].filter(Boolean));
+        });
+      break;
+  }
+}
+
+/**
  * Transform imports from ember-native-dom-helpers to @ember/test-helpers
  *
  * @param file
@@ -73,6 +136,7 @@ function transform(file, api) {
         if (importedName !== mappedName) {
           renameCallee(j, root, importedName, mappedName);
         }
+        migrateHelpersWithContext(j, root, importedName);
       } else {
         newSpecifiers.push(specifier);
       }
