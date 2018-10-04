@@ -1,6 +1,6 @@
 {
   "name": "ember-test-helpers-codemod",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Codemod to transform your jQuery based ember tests to use @ember/test-helpers",
   "main": "index.js",
   "author": "Simon Ihmig <ihmig@kaliber5.de>",
