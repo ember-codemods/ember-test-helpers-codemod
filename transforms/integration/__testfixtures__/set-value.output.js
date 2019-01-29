@@ -18,5 +18,13 @@ test('it renders', async function(assert) {
   Ember.run(() => this.$('select').val('1').trigger('change'));
   Ember.run(() => this.$('#odd').val(10).trigger('input').trigger('blur'));
   this.$('#odd').val(10).trigger('input').trigger('blur');
+  this.$('input:eq(0)')
+    .val('foo')
+    .trigger('keydown')
+    .focusout();
+  this.$('input:eq(0)')
+    .val('foo')
+    .trigger('keydown')
+    .blur();
   assert.ok(true);
 });
