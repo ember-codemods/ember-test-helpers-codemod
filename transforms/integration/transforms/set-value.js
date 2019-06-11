@@ -53,6 +53,7 @@ function isJQueryExpression(j, path) {
         && !hasFluentTriggerCall(j, path.parent.parent)
       )
     )
+    && !hasFluentTriggerAndMoreCall(j, path);
 }
 
 function hasFluentTriggerCall(j, path) {
@@ -65,6 +66,13 @@ function hasFluentTriggerCall(j, path) {
     && parent.property.name === 'trigger'
     && j.CallExpression.check(grandParent)
     ;
+}
+
+function hasFluentTriggerAndMoreCall(j, path) {
+  const greatGrandParent = path.parentPath.parentPath.parentPath.node;
+  return greatGrandParent
+    && j.MemberExpression.check(greatGrandParent)
+  ;
 }
 
 function hasFluentChangeCall(j, path) {
@@ -103,7 +111,6 @@ function transform(file, api) {
   let triggerReplacements = replacements
     .filter((path) => hasFluentTriggerCall(j, path))
     .map((path) => path.parent.parent.parent)
-    // .insertAfter((path) => j.expressionStatement(createTriggerExpression(j, path.node.expression.callee.object.argument.arguments[0], path.node.expression.arguments[0])))
     .replaceWith((path) => j.expressionStatement(path.node.expression.callee.object))
     .forEach((path) => makeParentFunctionAsync(j, path));
 
