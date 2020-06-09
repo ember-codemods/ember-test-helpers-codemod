@@ -360,13 +360,25 @@ function writeImportStatements(j, root) {
       source: { value: '@ember/test-helpers' }
     });
 
+    let actuallyNeedsImport = Array.from(_statementsToImport).filter(methodName => {
+      return root.find(j.CallExpression, {
+        callee: {
+          name: methodName
+        }
+      }).length > 0;
+    });
+
+    if (actuallyNeedsImport.length === 0) {
+      return;
+    }
+
     if (importStatement.length === 0) {
-      importStatement = createImportStatement(j, '@ember/test-helpers', 'default', Array.from(_statementsToImport));
+      importStatement = createImportStatement(j, '@ember/test-helpers', 'default', actuallyNeedsImport);
       body.unshift(importStatement);
     } else {
       let existingSpecifiers = importStatement.get("specifiers");
 
-      _statementsToImport.forEach(name => {
+      actuallyNeedsImport.forEach(name => {
         if (existingSpecifiers.filter(exSp => exSp.value.imported.name === name).length === 0) {
           existingSpecifiers.push(j.importSpecifier(j.identifier(name)));
         }
