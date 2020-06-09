@@ -11,6 +11,15 @@ const { createFindExpression, isJQuerySelectExpression, addImportStatement, writ
  * @returns {*}
  */
 function createExpression(j, findArgs) {
+  if (findArgs.length === 0) {
+    return j.memberExpression(
+      j.memberExpression(
+        j.thisExpression(),
+        j.identifier('element')
+      ),
+      j.identifier('textContent')
+    );
+  }
   return j.memberExpression(
     createFindExpression(j, findArgs),
     j.identifier('textContent')

@@ -11,3 +11,9 @@ test('it renders', function(assert) {
 
   assert.equal(find('.foo').textContent.trim(), '');
 });
+
+test('it renders', function(assert) {
+  this.render(hbs`{{foo-bar}}`);
+
+  assert.equal(this.element.textContent.trim(), '');
+});
