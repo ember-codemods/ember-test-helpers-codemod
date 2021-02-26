@@ -1,4 +1,4 @@
-import { find, findAll, visit, click, fillIn } from '@ember/test-helpers';
+import { find, findAll, visit, click } from '@ember/test-helpers';
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 

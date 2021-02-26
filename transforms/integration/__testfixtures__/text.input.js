@@ -10,3 +10,9 @@ test('it renders', function(assert) {
 
   assert.equal(this.$('.foo').text().trim(), '');
 });
+
+test('it renders', function(assert) {
+  this.render(hbs`{{foo-bar}}`);
+
+  assert.equal(this.$().text().trim(), '');
+});
