@@ -11,33 +11,23 @@ module.exports = function transformer(file, api) {
    * Replace deprecated this.render() with render() from '@ember/test-helpers' package
    */
   function transform() {
-    root.find(j.ExpressionStatement, {
-      expression: {
-        type: 'AwaitExpression',
-        argument: {
-        	type: 'CallExpression',
-          callee: {
-            type: 'MemberExpression',
-            object: {
-              type: 'ThisExpression'
-            },
-            property: {
-              type: 'Identifier',
-              name: 'render'
-            },
-          },
+    root.find(j.CallExpression, {
+      callee: {
+        type: 'MemberExpression',
+        object: {
+          type: 'ThisExpression'
+        },
+        property: {
+          type: 'Identifier',
+          name: 'render'
         },
       },
     }).replaceWith(path => {
-      let oldCallExpressionArguments = path.node.expression.argument.arguments;
+      let oldCallExpressionArguments = path.node.arguments;
 
-		  return j.expressionStatement(
-        j.awaitExpression(
-          j.callExpression(
-            j.identifier('render'), 
-            oldCallExpressionArguments
-          )
-        )
+      return j.callExpression(
+        j.identifier('render'), 
+        oldCallExpressionArguments
       )
     })
 
