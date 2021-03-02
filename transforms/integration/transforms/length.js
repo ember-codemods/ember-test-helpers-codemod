@@ -1,7 +1,12 @@
 'use strict';
 
 const { getParser } = require('codemod-cli').jscodeshift;
-const { createFindAllExpression, isJQuerySelectExpression, addImportStatement, writeImportStatements } = require('../../utils');
+const {
+  createFindAllExpression,
+  isJQuerySelectExpression,
+  addImportStatement,
+  writeImportStatements,
+} = require('../../utils');
 
 /**
  * Creates a `findAll(selector).length` expression
@@ -11,10 +16,7 @@ const { createFindAllExpression, isJQuerySelectExpression, addImportStatement, w
  * @returns {*}
  */
 function createExpression(j, findArgs) {
-  return j.memberExpression(
-    createFindAllExpression(j, findArgs),
-    j.identifier('length')
-  );
+  return j.memberExpression(createFindAllExpression(j, findArgs), j.identifier('length'));
 }
 
 /**
@@ -26,10 +28,12 @@ function createExpression(j, findArgs) {
  */
 function isJQueryExpression(j, path) {
   let node = path.node;
-  return j.MemberExpression.check(node)
-    && isJQuerySelectExpression(j, node.object, path)
-    && j.Identifier.check(node.property)
-    && node.property.name === 'length';
+  return (
+    j.MemberExpression.check(node) &&
+    isJQuerySelectExpression(j, node.object, path) &&
+    j.Identifier.check(node.property) &&
+    node.property.name === 'length'
+  );
 }
 
 /**
@@ -55,7 +59,7 @@ function transform(file, api) {
   }
 
   writeImportStatements(j, root);
-  return root.toSource({quote: 'single'});
+  return root.toSource({ quote: 'single' });
 }
 
 module.exports = transform;

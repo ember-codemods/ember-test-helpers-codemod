@@ -1,7 +1,13 @@
 'use strict';
 
 const { getParser } = require('codemod-cli').jscodeshift;
-const { createClickExpression, makeParentFunctionAsync, isJQuerySelectExpression, addImportStatement, writeImportStatements } = require('../../utils');
+const {
+  createClickExpression,
+  makeParentFunctionAsync,
+  isJQuerySelectExpression,
+  addImportStatement,
+  writeImportStatements,
+} = require('../../utils');
 
 /**
  * Check if `node` is a `this.$(selector).click()` expression
@@ -12,11 +18,13 @@ const { createClickExpression, makeParentFunctionAsync, isJQuerySelectExpression
  */
 function isJQueryExpression(j, path) {
   let node = path.node;
-  return j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && isJQuerySelectExpression(j, node.callee.object, path)
-    && j.Identifier.check(node.callee.property)
-    && node.callee.property.name === 'click';
+  return (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    isJQuerySelectExpression(j, node.callee.object, path) &&
+    j.Identifier.check(node.callee.property) &&
+    node.callee.property.name === 'click'
+  );
 }
 
 /**
@@ -36,9 +44,7 @@ function transform(file, api) {
     .find(j.CallExpression)
     .filter((path) => isJQueryExpression(j, path))
     .replaceWith(({ node }) => createClickExpression(j, node.callee.object.arguments))
-    .forEach((path) => makeParentFunctionAsync(j, path))
-    ;
-
+    .forEach((path) => makeParentFunctionAsync(j, path));
   if (replacements.length > 0) {
     addImportStatement(['click']);
   }

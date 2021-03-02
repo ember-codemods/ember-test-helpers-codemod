@@ -1,7 +1,12 @@
 'use strict';
 
 const { getParser } = require('codemod-cli').jscodeshift;
-const { createFindExpression, isJQuerySelectExpression, addImportStatement, writeImportStatements } = require('../../utils');
+const {
+  createFindExpression,
+  isJQuerySelectExpression,
+  addImportStatement,
+  writeImportStatements,
+} = require('../../utils');
 
 /**
  * Creates a `find(selector).innerHTML` expression
@@ -17,15 +22,11 @@ function createExpression(j, node) {
     createFindExpression(j, findArgs),
     j.identifier('innerHTML')
   );
- 
-  if (node.arguments.length === 0) {    
+
+  if (node.arguments.length === 0) {
     return findExpression;
   } else {
-    return j.assignmentExpression(
-      '=',
-      findExpression,
-      node.arguments[0]
-    );
+    return j.assignmentExpression('=', findExpression, node.arguments[0]);
   }
 }
 
@@ -38,11 +39,13 @@ function createExpression(j, node) {
  */
 function isJQueryExpression(j, path) {
   let node = path.node;
-  return j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && isJQuerySelectExpression(j, node.callee.object, path)
-    && j.Identifier.check(node.callee.property)
-    && node.callee.property.name === 'html';
+  return (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    isJQuerySelectExpression(j, node.callee.object, path) &&
+    j.Identifier.check(node.callee.property) &&
+    node.callee.property.name === 'html'
+  );
 }
 
 /**
@@ -70,7 +73,7 @@ function transform(file, api) {
   }
 
   writeImportStatements(j, root);
-  return root.toSource({quote: 'single'});
+  return root.toSource({ quote: 'single' });
 }
 
 module.exports = transform;

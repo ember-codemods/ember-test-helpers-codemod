@@ -1,7 +1,12 @@
 'use strict';
 
 const { getParser } = require('codemod-cli').jscodeshift;
-const { createFindExpression, isFindExpression, addImportStatement, writeImportStatements } = require('../../utils');
+const {
+  createFindExpression,
+  isFindExpression,
+  addImportStatement,
+  writeImportStatements,
+} = require('../../utils');
 
 /**
  * Creates a `find(selector).textContent` expression
@@ -11,10 +16,7 @@ const { createFindExpression, isFindExpression, addImportStatement, writeImportS
  * @returns {*}
  */
 function createExpression(j, findArgs) {
-  return j.memberExpression(
-    createFindExpression(j, findArgs),
-    j.identifier('textContent')
-  );
+  return j.memberExpression(createFindExpression(j, findArgs), j.identifier('textContent'));
 }
 
 /**
@@ -25,11 +27,13 @@ function createExpression(j, findArgs) {
  * @returns {*|boolean}
  */
 function isJQueryExpression(j, node) {
-  return j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && isFindExpression(j, node.callee.object)
-    && j.Identifier.check(node.callee.property)
-    && node.callee.property.name === 'text';
+  return (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    isFindExpression(j, node.callee.object) &&
+    j.Identifier.check(node.callee.property) &&
+    node.callee.property.name === 'text'
+  );
 }
 
 /**
@@ -55,7 +59,7 @@ function transform(file, api) {
   }
 
   writeImportStatements(j, root);
-  return root.toSource({quote: 'single'});
+  return root.toSource({ quote: 'single' });
 }
 
 module.exports = transform;

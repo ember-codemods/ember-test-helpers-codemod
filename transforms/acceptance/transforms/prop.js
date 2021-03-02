@@ -1,7 +1,12 @@
 'use strict';
 
 const { getParser } = require('codemod-cli').jscodeshift;
-const { createPropExpression, isFindExpression, addImportStatement, writeImportStatements } = require('../../utils');
+const {
+  createPropExpression,
+  isFindExpression,
+  addImportStatement,
+  writeImportStatements,
+} = require('../../utils');
 
 /**
  * Check if `node` is a `this.$(selector).prop('propName')` expression
@@ -11,13 +16,15 @@ const { createPropExpression, isFindExpression, addImportStatement, writeImportS
  * @returns {*|boolean}
  */
 function isJQueryExpression(j, node) {
-  return j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && isFindExpression(j, node.callee.object)
-    && j.Identifier.check(node.callee.property)
-    && node.callee.property.name === 'prop'
-    && node.arguments.length === 1
-    && j.Literal.check(node.arguments[0]);
+  return (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    isFindExpression(j, node.callee.object) &&
+    j.Identifier.check(node.callee.property) &&
+    node.callee.property.name === 'prop' &&
+    node.arguments.length === 1 &&
+    j.Literal.check(node.arguments[0])
+  );
 }
 
 /**
@@ -34,11 +41,11 @@ function transform(file, api) {
   let root = j(source);
 
   let replacements = root
-      .find(j.CallExpression)
-      .filter(({ node }) => isJQueryExpression(j, node))
-      .replaceWith(({ node }) => createPropExpression(j, node.callee.object.arguments, node.arguments[0].value))
-    ;
-
+    .find(j.CallExpression)
+    .filter(({ node }) => isJQueryExpression(j, node))
+    .replaceWith(({ node }) =>
+      createPropExpression(j, node.callee.object.arguments, node.arguments[0].value)
+    );
   if (replacements.length > 0) {
     addImportStatement(['find']);
   }

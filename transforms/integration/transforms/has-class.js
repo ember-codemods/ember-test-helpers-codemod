@@ -1,7 +1,12 @@
 'use strict';
 
 const { getParser } = require('codemod-cli').jscodeshift;
-const { createFindExpression, isJQuerySelectExpression, addImportStatement, writeImportStatements } = require('../../utils');
+const {
+  createFindExpression,
+  isJQuerySelectExpression,
+  addImportStatement,
+  writeImportStatements,
+} = require('../../utils');
 
 /**
  * Creates a `find(selector).classList.contains(className)` expression
@@ -14,10 +19,7 @@ const { createFindExpression, isJQuerySelectExpression, addImportStatement, writ
 function createExpression(j, findArgs, className) {
   return j.callExpression(
     j.memberExpression(
-      j.memberExpression(
-        createFindExpression(j, findArgs),
-        j.identifier('classList')
-      ),
+      j.memberExpression(createFindExpression(j, findArgs), j.identifier('classList')),
       j.identifier('contains')
     ),
     [className]
@@ -33,11 +35,13 @@ function createExpression(j, findArgs, className) {
  */
 function isJQueryExpression(j, path) {
   let node = path.node;
-  return j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && isJQuerySelectExpression(j, node.callee.object, path)
-    && j.Identifier.check(node.callee.property)
-    && node.callee.property.name === 'hasClass';
+  return (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    isJQuerySelectExpression(j, node.callee.object, path) &&
+    j.Identifier.check(node.callee.property) &&
+    node.callee.property.name === 'hasClass'
+  );
 }
 
 /**
@@ -56,7 +60,9 @@ function transform(file, api) {
   let replacements = root
     .find(j.CallExpression)
     .filter((path) => isJQueryExpression(j, path))
-    .replaceWith(({ node }) => createExpression(j, node.callee.object.arguments, node.arguments[0]));
+    .replaceWith(({ node }) =>
+      createExpression(j, node.callee.object.arguments, node.arguments[0])
+    );
 
   if (replacements.length > 0) {
     addImportStatement(['find']);

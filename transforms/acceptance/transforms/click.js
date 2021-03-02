@@ -1,7 +1,12 @@
 'use strict';
 
 const { getParser } = require('codemod-cli').jscodeshift;
-const { makeAwait, dropAndThen, addImportStatement, writeImportStatements } = require('../../utils');
+const {
+  makeAwait,
+  dropAndThen,
+  addImportStatement,
+  writeImportStatements,
+} = require('../../utils');
 
 /**
  * Check if `node` is a `click(selector)` expression
@@ -11,9 +16,9 @@ const { makeAwait, dropAndThen, addImportStatement, writeImportStatements } = re
  * @returns {*|boolean}
  */
 function isGlobalHelperExpression(j, node) {
-  return j.CallExpression.check(node)
-    && j.Identifier.check(node.callee)
-    && node.callee.name === 'click';
+  return (
+    j.CallExpression.check(node) && j.Identifier.check(node.callee) && node.callee.name === 'click'
+  );
 }
 
 /**
@@ -31,9 +36,7 @@ function transform(file, api) {
 
   let replacements = root
     .find(j.CallExpression)
-    .filter(({ node }) => isGlobalHelperExpression(j, node))
-    ;
-
+    .filter(({ node }) => isGlobalHelperExpression(j, node));
   if (replacements.length > 0) {
     makeAwait(j, replacements);
     dropAndThen(j, root);

@@ -16,7 +16,7 @@ function transform(file, api) {
   let root = j(source);
 
   let importStatement = root.find(j.ImportDeclaration, {
-    source: { value: '@ember/test-helpers' }
+    source: { value: '@ember/test-helpers' },
   });
   if (importStatement.length === 0) {
     return root.toSource({ quote: 'single' });
@@ -31,8 +31,8 @@ function transform(file, api) {
         root
           .find(j.CallExpression, {
             callee: {
-              name: 'find'
-            }
+              name: 'find',
+            },
           })
           .replaceWith(({ node }) => createQuerySelectorExpression(j, node.arguments));
         break;
@@ -40,8 +40,8 @@ function transform(file, api) {
         root
           .find(j.CallExpression, {
             callee: {
-              name: 'findAll'
-            }
+              name: 'findAll',
+            },
           })
           .replaceWith(({ node }) => createQuerySelectorAllExpression(j, node.arguments));
         break;

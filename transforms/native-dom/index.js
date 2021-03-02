@@ -16,7 +16,7 @@ const importMigrations = [
   'waitUntil',
   'currentURL',
   'currentRouteName',
-  'visit'
+  'visit',
 ];
 const importMigrationsLookup = importMigrations.reduce((result, specifier) => {
   let key = specifier;
@@ -32,10 +32,10 @@ function renameCallee(j, root, name, newName) {
   root
     .find(j.CallExpression, {
       callee: {
-        name
-      }
+        name,
+      },
     })
-    .forEach(({ node }) => node.callee.name = newName);
+    .forEach(({ node }) => (node.callee.name = newName));
 }
 
 /**
@@ -50,52 +50,70 @@ function migrateHelpersWithContext(j, root, importedName) {
       root
         .find(j.CallExpression, {
           callee: {
-            name: 'find'
+            name: 'find',
           },
-          arguments: [ {}, {} ]
+          arguments: [{}, {}],
         })
-        .replaceWith(({node}) => {
-          let [ selector, context ] = node.arguments;
+        .replaceWith(({ node }) => {
+          let [selector, context] = node.arguments;
           if (selector.type === 'StringLiteral' && context.type === 'StringLiteral') {
-            return j.callExpression(j.identifier('find'), [ j.literal(`${context.value} ${selector.value}`) ]);
+            return j.callExpression(j.identifier('find'), [
+              j.literal(`${context.value} ${selector.value}`),
+            ]);
           }
-          return j.callExpression(j.memberExpression(context, j.identifier('querySelector')), [ selector ])
+          return j.callExpression(j.memberExpression(context, j.identifier('querySelector')), [
+            selector,
+          ]);
         });
       break;
     case 'findAll':
       root
         .find(j.CallExpression, {
           callee: {
-            name: 'findAll'
+            name: 'findAll',
           },
-          arguments: [ {}, {} ]
+          arguments: [{}, {}],
         })
-        .replaceWith(({node}) => {
-          let [ selector, context ] = node.arguments;
+        .replaceWith(({ node }) => {
+          let [selector, context] = node.arguments;
           if (selector.type === 'StringLiteral' && context.type === 'StringLiteral') {
-            return j.callExpression(j.identifier('findAll'), [ j.literal(`${context.value} ${selector.value}`) ]);
+            return j.callExpression(j.identifier('findAll'), [
+              j.literal(`${context.value} ${selector.value}`),
+            ]);
           }
-          return j.callExpression(j.memberExpression(context, j.identifier('querySelectorAll')), [ selector ])
+          return j.callExpression(j.memberExpression(context, j.identifier('querySelectorAll')), [
+            selector,
+          ]);
         });
       break;
     case 'click':
       root
         .find(j.CallExpression, {
           callee: {
-            name: 'click'
+            name: 'click',
           },
-          arguments: [ {}, {} ] // matches 2 or 3 arguments
+          arguments: [{}, {}], // matches 2 or 3 arguments
         })
-        .replaceWith(({node}) => {
-          let [ selector, context, options ] = node.arguments;
+        .replaceWith(({ node }) => {
+          let [selector, context, options] = node.arguments;
           if (context.type === 'ObjectExpression') {
             // click(selector, { ...options })
             return node;
           }
           if (selector.type === 'StringLiteral' && context.type === 'StringLiteral') {
-            return j.callExpression(j.identifier('click'), [ j.literal(`${context.value} ${selector.value}`) ]);
+            return j.callExpression(j.identifier('click'), [
+              j.literal(`${context.value} ${selector.value}`),
+            ]);
           }
-          return j.callExpression(j.identifier('click'), [ j.callExpression(j.memberExpression(context, j.identifier('querySelector')), [ selector ]), options ].filter(Boolean));
+          return j.callExpression(
+            j.identifier('click'),
+            [
+              j.callExpression(j.memberExpression(context, j.identifier('querySelector')), [
+                selector,
+              ]),
+              options,
+            ].filter(Boolean)
+          );
         });
       break;
   }
@@ -114,7 +132,7 @@ function transform(file, api) {
   let root = j(source);
 
   let nativeDomImportStatements = root.find(j.ImportDeclaration, {
-    source: { value: 'ember-native-dom-helpers' }
+    source: { value: 'ember-native-dom-helpers' },
   });
   if (nativeDomImportStatements.length === 0) {
     return root.toSource({ quote: 'single' });

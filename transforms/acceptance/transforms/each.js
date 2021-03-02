@@ -6,7 +6,7 @@ const {
   isFindExpression,
   addImportStatement,
   writeImportStatements,
-  transformEachsCallbackArgs
+  transformEachsCallbackArgs,
 } = require('../../utils');
 
 /**
@@ -20,10 +20,8 @@ const {
 function createExpression(j, findArgs, eachCallback) {
   const transformedCallback = transformEachsCallbackArgs(eachCallback);
   return j.callExpression(
-    j.memberExpression(
-      createFindAllExpression(j, findArgs),
-      j.identifier('forEach')
-    ), transformedCallback
+    j.memberExpression(createFindAllExpression(j, findArgs), j.identifier('forEach')),
+    transformedCallback
   );
 }
 
@@ -35,11 +33,13 @@ function createExpression(j, findArgs, eachCallback) {
  * @returns {*|boolean}
  */
 function isJQueryExpression(j, node) {
-  return j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && isFindExpression(j, node.callee.object)
-    && j.Identifier.check(node.callee.property)
-    && node.callee.property.name === 'each'
+  return (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    isFindExpression(j, node.callee.object) &&
+    j.Identifier.check(node.callee.property) &&
+    node.callee.property.name === 'each'
+  );
 }
 
 /**

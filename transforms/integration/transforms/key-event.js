@@ -1,7 +1,13 @@
 'use strict';
 
 const { getParser } = require('codemod-cli').jscodeshift;
-const { migrateSelector, makeParentFunctionAsync, isJQuerySelectExpression, addImportStatement, writeImportStatements } = require('../../utils');
+const {
+  migrateSelector,
+  makeParentFunctionAsync,
+  isJQuerySelectExpression,
+  addImportStatement,
+  writeImportStatements,
+} = require('../../utils');
 
 /**
  * Creates a `await keyEvent(selector, eventName, keyCode)` expression
@@ -14,10 +20,7 @@ const { migrateSelector, makeParentFunctionAsync, isJQuerySelectExpression, addI
  */
 function createExpression(j, selector, eventName, keyCode) {
   return j.awaitExpression(
-    j.callExpression(
-      j.identifier('keyEvent'),
-      [migrateSelector(j, selector), eventName, keyCode]
-    )
+    j.callExpression(j.identifier('keyEvent'), [migrateSelector(j, selector), eventName, keyCode])
   );
 }
 
@@ -30,17 +33,18 @@ function createExpression(j, selector, eventName, keyCode) {
  */
 function isJQueryExpression(j, path) {
   let node = path.node;
-  return j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && isJQuerySelectExpression(j, node.callee.object, path)
-    && j.Identifier.check(node.callee.property)
-    && node.callee.property.name === 'trigger'
-    && node.arguments.length === 2
-    && j.ObjectExpression.check(node.arguments[1])
-    && node.arguments[1]
-    && j.Identifier.check(node.arguments[1].properties[0].key)
-    && node.arguments[1].properties[0].key.name === 'keyCode'
-    ;
+  return (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    isJQuerySelectExpression(j, node.callee.object, path) &&
+    j.Identifier.check(node.callee.property) &&
+    node.callee.property.name === 'trigger' &&
+    node.arguments.length === 2 &&
+    j.ObjectExpression.check(node.arguments[1]) &&
+    node.arguments[1] &&
+    j.Identifier.check(node.arguments[1].properties[0].key) &&
+    node.arguments[1].properties[0].key.name === 'keyCode'
+  );
 }
 
 /**
@@ -59,10 +63,15 @@ function transform(file, api) {
   let replacements = root
     .find(j.CallExpression)
     .filter((path) => isJQueryExpression(j, path))
-    .replaceWith(({ node }) => createExpression(j, node.callee.object.arguments[0], node.arguments[0], node.arguments[1].properties[0].value))
-    .forEach((path) => makeParentFunctionAsync(j, path))
-    ;
-
+    .replaceWith(({ node }) =>
+      createExpression(
+        j,
+        node.callee.object.arguments[0],
+        node.arguments[0],
+        node.arguments[1].properties[0].value
+      )
+    )
+    .forEach((path) => makeParentFunctionAsync(j, path));
   if (replacements.length > 0) {
     addImportStatement(['keyEvent']);
   }

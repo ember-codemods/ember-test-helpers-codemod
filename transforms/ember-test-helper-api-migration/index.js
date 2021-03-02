@@ -10,8 +10,8 @@ module.exports = function transformer(file, api) {
    */
   function transform() {
     let deprecatedEmberTestHelperStatements = root.find(j.ImportDeclaration, {
-      source: { value: 'ember-test-helpers'}
-    })
+      source: { value: 'ember-test-helpers' },
+    });
 
     if (deprecatedEmberTestHelperStatements.length === 0) {
       return root.toSource({
@@ -24,16 +24,16 @@ module.exports = function transformer(file, api) {
 
     deprecatedEmberTestHelperStatements.forEach((importStatement) => {
       let oldSpecifiers = importStatement.get('specifiers');
-  
+
       oldSpecifiers.each(({ node: specifier }) => {
         let importedName = specifier.imported.name;
-        newImports.push(importedName)
+        newImports.push(importedName);
       });
 
       // Remove "ember-test-helper" import statement
       j(importStatement).remove();
     });
-  
+
     addImportStatement(newImports);
     writeImportStatements(j, root);
   }
@@ -44,4 +44,4 @@ module.exports = function transformer(file, api) {
     quote: 'single',
     trailingComma: true,
   });
-}
+};
