@@ -1,5 +1,5 @@
 # ember-test-helper-api-migration
-This codemod transfer is to migrate deprecated package `ember-test-helpers` to package `@ember/test-helpers`
+This codemod is to migrate deprecated package `ember-test-helpers` to package `@ember/test-helpers`
 
 ## Usage
 

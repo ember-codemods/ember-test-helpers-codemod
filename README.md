@@ -1,6 +1,6 @@
 # ember-test-helpers-codemod
 
-[![Build Status](https://travis-ci.org/simonihmig/ember-test-helpers-codemod.svg?branch=master)](https://travis-ci.org/simonihmig/ember-test-helpers-codemod)
+[![Build Status](https://travis-ci.org/ember-codemods/ember-test-helpers-codemod.svg?branch=master)](https://travis-ci.org/ember-codemods/ember-test-helpers-codemod)
 [![Build status](https://ci.appveyor.com/api/projects/status/fadn7iu9fl53qb6k/branch/master?svg=true)](https://ci.appveyor.com/project/simonihmig/ember-test-helpers-codemod/branch/master)
 [![npm version](https://badge.fury.io/js/ember-test-helpers-codemod.svg)](https://badge.fury.io/js/ember-test-helpers-codemod)
 
@@ -28,7 +28,7 @@ npx ember-test-helpers-codemod native-dom tests
 
 ## Transformations
 
-### Integrations tests
+### Integration tests
 
 This addon will perform the following transformations suitable for integration tests:
 
@@ -62,6 +62,8 @@ If you want to run only selected transforms on your code, you can pick just the 
 jscodeshift -t path/to/ember-test-helpers-codemod/transforms/integration/transforms/click.js tests/integration
 ```
 
+See also docs for [`integration` transform](transforms/integration).
+
 ### Acceptance tests
 
 These transformations are available for acceptance tests:
@@ -92,6 +94,8 @@ If you want to run only selected transforms on your code, you can pick just the 
 jscodeshift -t ../ember-test-helpers-codemod/transforms/acceptance/transforms/click.js tests/integration
 ```
 
+See also docs for [`acceptance` transform](transforms/acceptance).
+
 ### ember-native-dom-helpers tests
 
 These transformations are available for tests based on `ember-native-dom-helpers`:
@@ -104,7 +108,8 @@ These transformations are available for tests based on `ember-native-dom-helpers
 | `findAll('.foo', context)`                   | `context.querySelectorAll('.foo')`                         |
 | `click('.foo', context)`                     | `click(context.querySelector('.foo'))`                     |
 | `click('.foo', context, { shiftKey: true })` | `click(context.querySelector('.foo'), { shiftKey: true })` |
- 
+
+See also docs for [`native-dom` transform](transforms/native-dom).
 
 ### Replace find/findAll
 
@@ -124,3 +129,17 @@ npx ember-test-helpers-codemod find tests
 Note that this will require all instances of `find`/`findAll` to have the correct `this` context, otherwise you will run
 into `Cannot read property 'querySelector' of undefined` exceptions, as `this.element` will not be defined. This can 
 happen outside of the main `test` function, for example inside of custom test helper functions.
+
+See also docs for [`find` transform](transforms/find).
+
+### Replace deprecated `ember-test-helpers` package
+
+Replace all imports of `ember-test-helpers` to `@ember/test-helpers`. 
+
+See docs for [`ember-test-helper-api-migration` transform](transforms/ember-test-helper-api-migration).
+
+### Replace deprecated `this.render()` with `render()`
+
+Replace all uses of `this.render()` with `render()`.
+
+See docs for [`this-render-migration` transform](transforms/this-render-migration).
