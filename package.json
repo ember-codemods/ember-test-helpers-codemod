@@ -11,17 +11,26 @@
     "codemod-cli"
   ],
   "scripts": {
+    "lint": "eslint --cache .",
     "test": "codemod-cli test",
-    "update-docs": "codemod-cli update-docs"
+    "test:coverage": "codemod-cli test --coverage",
+    "update-docs": "codemod-cli update-docs",
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "dependencies": {
-    "codemod-cli": "^0.2.5"
+    "codemod-cli": "^2.1.0"
   },
   "devDependencies": {
-    "jest": "^23.6.0"
+    "coveralls": "^3.0.6",
+    "eslint": "^7.21.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "jest": "^24.9.0",
+    "prettier": "^2.2.1"
   },
   "engines": {
-    "node": ">= 6"
+    "node": "10.* || >= 12"
   },
   "jest": {
     "testEnvironment": "node"
