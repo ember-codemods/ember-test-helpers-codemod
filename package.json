@@ -2,20 +2,23 @@
   "name": "ember-test-helpers-codemod",
   "version": "0.2.0",
   "description": "Codemod to transform your jQuery based ember tests to use @ember/test-helpers",
-  "main": "index.js",
-  "author": "Simon Ihmig <ihmig@kaliber5.de>",
-  "repository": "https://github.com/simonihmig/ember-test-helpers-codemod",
-  "license": "MIT",
-  "bin": "./bin/cli.js",
   "keywords": [
     "codemod-cli"
   ],
+  "repository": "https://github.com/simonihmig/ember-test-helpers-codemod",
+  "license": "MIT",
+  "author": "Simon Ihmig <ihmig@kaliber5.de>",
+  "main": "index.js",
+  "bin": "./bin/cli.js",
   "scripts": {
     "lint": "eslint --cache .",
     "test": "codemod-cli test",
     "test:coverage": "codemod-cli test --coverage",
     "update-docs": "codemod-cli update-docs",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "dependencies": {
     "codemod-cli": "^2.1.0"
@@ -27,12 +30,29 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "jest": "^24.9.0",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "release-it": "^14.2.1",
+    "release-it-lerna-changelog": "^3.1.0"
   },
   "engines": {
     "node": "10.* || >= 12"
   },
-  "jest": {
-    "testEnvironment": "node"
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "release-it": {
+    "plugins": {
+      "release-it-lerna-changelog": {
+        "infile": "CHANGELOG.md",
+        "launchEditor": true
+      }
+    },
+    "git": {
+      "tagName": "v${version}"
+    },
+    "github": {
+      "release": true,
+      "tokenRef": "GITHUB_AUTH"
+    }
   }
 }
