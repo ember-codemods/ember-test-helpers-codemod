@@ -6,7 +6,7 @@ const {
   isJQuerySelectExpression,
   addImportStatement,
   writeImportStatements,
-  transformEachsCallbackArgs
+  transformEachsCallbackArgs,
 } = require('../../utils');
 
 /**
@@ -20,10 +20,8 @@ const {
 function createExpression(j, findArgs, eachCallback) {
   const transformedCallback = transformEachsCallbackArgs(eachCallback);
   return j.callExpression(
-    j.memberExpression(
-      createFindAllExpression(j, findArgs),
-      j.identifier('forEach')
-    ), transformedCallback
+    j.memberExpression(createFindAllExpression(j, findArgs), j.identifier('forEach')),
+    transformedCallback
   );
 }
 
@@ -36,11 +34,13 @@ function createExpression(j, findArgs, eachCallback) {
  */
 function isJQueryExpression(j, path) {
   let node = path.node;
-  return j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && isJQuerySelectExpression(j, node.callee.object, path)
-    && j.Identifier.check(node.callee.property)
-    && node.callee.property.name === 'each';
+  return (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    isJQuerySelectExpression(j, node.callee.object, path) &&
+    j.Identifier.check(node.callee.property) &&
+    node.callee.property.name === 'each'
+  );
 }
 
 /**

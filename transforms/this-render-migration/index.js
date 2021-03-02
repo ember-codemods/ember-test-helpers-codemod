@@ -11,25 +11,24 @@ module.exports = function transformer(file, api) {
    * Replace deprecated this.render() with render() from '@ember/test-helpers' package
    */
   function transform() {
-    root.find(j.CallExpression, {
-      callee: {
-        type: 'MemberExpression',
-        object: {
-          type: 'ThisExpression'
+    root
+      .find(j.CallExpression, {
+        callee: {
+          type: 'MemberExpression',
+          object: {
+            type: 'ThisExpression',
+          },
+          property: {
+            type: 'Identifier',
+            name: 'render',
+          },
         },
-        property: {
-          type: 'Identifier',
-          name: 'render'
-        },
-      },
-    }).replaceWith(path => {
-      let oldCallExpressionArguments = path.node.arguments;
+      })
+      .replaceWith((path) => {
+        let oldCallExpressionArguments = path.node.arguments;
 
-      return j.callExpression(
-        j.identifier('render'), 
-        oldCallExpressionArguments
-      )
-    })
+        return j.callExpression(j.identifier('render'), oldCallExpressionArguments);
+      });
 
     let newImports = ['render'];
 
@@ -43,4 +42,4 @@ module.exports = function transformer(file, api) {
     quote: 'single',
     trailingComma: true,
   });
-}
+};

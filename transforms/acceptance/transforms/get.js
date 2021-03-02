@@ -17,11 +17,8 @@ const {
  * @returns {*}
  */
 function createExpression(j, findArgs, indexArg) {
-  const index = indexArg[0] && indexArg[0].value || 0;
-  return j.memberExpression(
-    createFindAllExpression(j, findArgs),
-    j.literal(index)
-  );
+  const index = (indexArg[0] && indexArg[0].value) || 0;
+  return j.memberExpression(createFindAllExpression(j, findArgs), j.literal(index));
 }
 
 /**
@@ -32,11 +29,13 @@ function createExpression(j, findArgs, indexArg) {
  * @returns {*|boolean}
  */
 function isJQueryExpression(j, node) {
-  return j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && isFindExpression(j, node.callee.object)
-    && j.Identifier.check(node.callee.property)
-    && node.callee.property.name === 'get';
+  return (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    isFindExpression(j, node.callee.object) &&
+    j.Identifier.check(node.callee.property) &&
+    node.callee.property.name === 'get'
+  );
 }
 
 /**

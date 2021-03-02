@@ -24,13 +24,10 @@ const jqExtensions = [
   /:selected/,
   /:submit/,
   /:text/,
-  /:visible/
+  /:visible/,
 ];
 
-const supportedJqExtensions = [
-  /.+:eq/,
-  /.+:selected/,
-];
+const supportedJqExtensions = [/.+:eq/, /.+:selected/];
 
 const tailEqRegex = /:eq\(\d+\)$/;
 const selectedRegex = /:selected/;
@@ -46,8 +43,10 @@ let _statementsToImport = new Set();
  * @returns {boolean}
  */
 function containsJQuerySelectorExtension(string, excludeSupported = true) {
-  return jqExtensions.some((regex) => string.match(regex))
-    && (!excludeSupported || !supportedJqExtensions.some((regex) => string.match(regex)));
+  return (
+    jqExtensions.some((regex) => string.match(regex)) &&
+    (!excludeSupported || !supportedJqExtensions.some((regex) => string.match(regex)))
+  );
 }
 
 /**
@@ -62,16 +61,18 @@ function containsJQuerySelectorExtension(string, excludeSupported = true) {
  * @returns {boolean}
  */
 function isJQuerySelectExpression(j, node, path) {
-  if (j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && j.ThisExpression.check(node.callee.object)
-    && j.Identifier.check(node.callee.property)
-    && node.callee.property.name === '$') {
-
+  if (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    j.ThisExpression.check(node.callee.object) &&
+    j.Identifier.check(node.callee.property) &&
+    node.callee.property.name === '$'
+  ) {
     let hasNoArgs = node.arguments.length === 0;
-    let isLiteralSelector = j.Literal.check(node.arguments[0])
-      && typeof node.arguments[0].value === 'string'
-      && !containsJQuerySelectorExtension(node.arguments[0].value);
+    let isLiteralSelector =
+      j.Literal.check(node.arguments[0]) &&
+      typeof node.arguments[0].value === 'string' &&
+      !containsJQuerySelectorExtension(node.arguments[0].value);
 
     if (hasNoArgs || isLiteralSelector) {
       return true;
@@ -86,12 +87,13 @@ function isJQuerySelectExpression(j, node, path) {
       if (!bindings) return false;
 
       let parent = bindings[0].parent;
-      return j.VariableDeclarator.check(parent.node)
-        && j.Literal.check(parent.node.init)
-        && typeof parent.node.init.value === 'string'
-        && !containsJQuerySelectorExtension(parent.node.init.value, false);
+      return (
+        j.VariableDeclarator.check(parent.node) &&
+        j.Literal.check(parent.node.init) &&
+        typeof parent.node.init.value === 'string' &&
+        !containsJQuerySelectorExtension(parent.node.init.value, false)
+      );
     }
-
   }
   return false;
 }
@@ -104,9 +106,9 @@ function isJQuerySelectExpression(j, node, path) {
  * @returns {*|boolean}
  */
 function isFindExpression(j, node) {
-  return j.CallExpression.check(node)
-    && j.Identifier.check(node.callee)
-    && node.callee.name === 'find';
+  return (
+    j.CallExpression.check(node) && j.Identifier.check(node.callee) && node.callee.name === 'find'
+  );
 }
 
 /**
@@ -151,13 +153,14 @@ function migrateSelector(j, selector) {
  * @returns {*}
  */
 function createFindExpression(j, args) {
-  args = args.length > 0 ? args.map(s => migrateSelector(j, s)) : [j.literal('*')];
+  args = args.length > 0 ? args.map((s) => migrateSelector(j, s)) : [j.literal('*')];
 
   // Avoid nesting find calls
-  let isFindCallExpression = args.length === 1
-    && j.CallExpression.check(args[0])
-    && j.Identifier.check(args[0].callee)
-    && args[0].callee.name === 'find';
+  let isFindCallExpression =
+    args.length === 1 &&
+    j.CallExpression.check(args[0]) &&
+    j.Identifier.check(args[0].callee) &&
+    args[0].callee.name === 'find';
 
   if (isFindCallExpression) {
     return args[0];
@@ -174,18 +177,20 @@ function createFindExpression(j, args) {
  * @returns {*}
  */
 function createFindAllExpression(j, args, fileRoot) {
-  args = args.length > 0 ? args.map(s => migrateSelector(j, s, fileRoot)) : [j.literal('*')];
+  args = args.length > 0 ? args.map((s) => migrateSelector(j, s, fileRoot)) : [j.literal('*')];
 
   // Avoid nesting findAll calls
-  let isFindAllCallExpression = args.length === 1
-    && j.CallExpression.check(args[0])
-    && j.Identifier.check(args[0].callee)
-    && args[0].callee.name === 'findAll';
+  let isFindAllCallExpression =
+    args.length === 1 &&
+    j.CallExpression.check(args[0]) &&
+    j.Identifier.check(args[0].callee) &&
+    args[0].callee.name === 'findAll';
 
-  let isFindAllMemberExpression = args.length === 1
-    && j.MemberExpression.check(args[0])
-    && j.Identifier.check(args[0].object.callee)
-    && args[0].object.callee.name === 'findAll';
+  let isFindAllMemberExpression =
+    args.length === 1 &&
+    j.MemberExpression.check(args[0]) &&
+    j.Identifier.check(args[0].object.callee) &&
+    args[0].object.callee.name === 'findAll';
 
   if (isFindAllCallExpression || isFindAllMemberExpression) {
     return args[0];
@@ -202,22 +207,29 @@ function createFindAllExpression(j, args, fileRoot) {
  * @returns {*}
  */
 function createQuerySelectorExpression(j, args) {
-  args = args.length > 0 ? args.map(s => migrateSelector(j, s)) : [j.literal('*')];
+  args = args.length > 0 ? args.map((s) => migrateSelector(j, s)) : [j.literal('*')];
 
   // Avoid nesting find calls
-  let isQuerySelectorCallExpression = args.length === 1
-    && j.CallExpression.check(args[0])
-    && j.MemberExpression.check(args[0].callee)
-    && j.MemberExpression.check(args[0].callee.object)
+  let isQuerySelectorCallExpression =
+    args.length === 1 &&
+    j.CallExpression.check(args[0]) &&
+    j.MemberExpression.check(args[0].callee) &&
+    j.MemberExpression.check(args[0].callee.object) &&
     // && j.ThisExpression.check(args[0].callee.object.object)
-    && args[0].callee.object.property.name === 'element'
-    && args[0].callee.property.name === 'querySelector';
+    args[0].callee.object.property.name === 'element' &&
+    args[0].callee.property.name === 'querySelector';
 
   if (isQuerySelectorCallExpression) {
     return args[0];
   }
 
-  return j.callExpression(j.memberExpression(j.memberExpression(j.thisExpression(), j.identifier('element')), j.identifier('querySelector')), args);
+  return j.callExpression(
+    j.memberExpression(
+      j.memberExpression(j.thisExpression(), j.identifier('element')),
+      j.identifier('querySelector')
+    ),
+    args
+  );
 }
 
 /**
@@ -228,29 +240,38 @@ function createQuerySelectorExpression(j, args) {
  * @returns {*}
  */
 function createQuerySelectorAllExpression(j, args, fileRoot) {
-  args = args.length > 0 ? args.map(s => migrateSelector(j, s, fileRoot)) : [j.literal('*')];
+  args = args.length > 0 ? args.map((s) => migrateSelector(j, s, fileRoot)) : [j.literal('*')];
 
   // Avoid nesting querySelector calls
   let isQSA = args.length === 1 && isQuerySelectorAllCallExpression(j, args[0]);
 
-  let isQSAMemberExpression = args.length === 1
-    && j.MemberExpression.check(args[0])
-    && isQuerySelectorAllCallExpression(j, args[0].object);
+  let isQSAMemberExpression =
+    args.length === 1 &&
+    j.MemberExpression.check(args[0]) &&
+    isQuerySelectorAllCallExpression(j, args[0].object);
 
   if (isQSA || isQSAMemberExpression) {
     return args[0];
   }
 
-  return j.callExpression(j.memberExpression(j.memberExpression(j.thisExpression(), j.identifier('element')), j.identifier('querySelectorAll')), args);
+  return j.callExpression(
+    j.memberExpression(
+      j.memberExpression(j.thisExpression(), j.identifier('element')),
+      j.identifier('querySelectorAll')
+    ),
+    args
+  );
 }
 
 function isQuerySelectorAllCallExpression(j, node) {
-  return j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && j.MemberExpression.check(node.callee.object)
+  return (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    j.MemberExpression.check(node.callee.object) &&
     // && j.ThisExpression.check(node.callee.object.object)
-    && node.callee.object.property.name === 'element'
-    && node.callee.property.name === 'querySelectorAll';
+    node.callee.object.property.name === 'element' &&
+    node.callee.property.name === 'querySelectorAll'
+  );
 }
 
 /**
@@ -260,14 +281,9 @@ function isQuerySelectorAllCallExpression(j, node) {
  * @returns {*}
  */
 function createClickExpression(j, args) {
-  args = args.map(s => migrateSelector(j, s));
+  args = args.map((s) => migrateSelector(j, s));
 
-  return j.awaitExpression(
-    j.callExpression(
-      j.identifier('click'),
-      args
-    )
-  );
+  return j.awaitExpression(j.callExpression(j.identifier('click'), args));
 }
 
 /**
@@ -279,10 +295,10 @@ function createClickExpression(j, args) {
  * @returns {*}
  */
 function createTriggerExpression(j, selector, eventName) {
-  let triggerExpression = j.callExpression(
-    j.identifier('triggerEvent'),
-    [migrateSelector(j, selector), eventName]
-  )
+  let triggerExpression = j.callExpression(j.identifier('triggerEvent'), [
+    migrateSelector(j, selector),
+    eventName,
+  ]);
   return j.awaitExpression(triggerExpression);
 }
 
@@ -295,10 +311,7 @@ function createTriggerExpression(j, selector, eventName) {
  * @returns {*}
  */
 function createPropExpression(j, findArgs, prop) {
-  return j.memberExpression(
-    createFindExpression(j, findArgs),
-    j.identifier(prop)
-  );
+  return j.memberExpression(createFindExpression(j, findArgs), j.identifier(prop));
 }
 
 function createArraySubscriptExpression(j, expression, index) {
@@ -312,12 +325,7 @@ function createArraySubscriptExpression(j, expression, index) {
  * @returns {*}
  */
 function createFocusExpression(j, selector) {
-  return j.awaitExpression(
-    j.callExpression(
-      j.identifier('focus'),
-      [migrateSelector(j, selector)]
-    )
-  );
+  return j.awaitExpression(j.callExpression(j.identifier('focus'), [migrateSelector(j, selector)]));
 }
 
 /**
@@ -327,12 +335,7 @@ function createFocusExpression(j, selector) {
  * @returns {*}
  */
 function createBlurExpression(j, selector) {
-  return j.awaitExpression(
-    j.callExpression(
-      j.identifier('blur'),
-      [migrateSelector(j, selector)]
-    )
-  );
+  return j.awaitExpression(j.callExpression(j.identifier('blur'), [migrateSelector(j, selector)]));
 }
 
 /**
@@ -343,7 +346,7 @@ function createBlurExpression(j, selector) {
  * @param {array} imports
  */
 function addImportStatement(imports) {
-  imports.forEach(method => _statementsToImport.add(method));
+  imports.forEach((method) => _statementsToImport.add(method));
 }
 
 /**
@@ -357,15 +360,17 @@ function writeImportStatements(j, root) {
   if (_statementsToImport.size > 0) {
     let body = root.get().value.program.body;
     let importStatement = root.find(j.ImportDeclaration, {
-      source: { value: '@ember/test-helpers' }
+      source: { value: '@ember/test-helpers' },
     });
 
-    let actuallyNeedsImport = Array.from(_statementsToImport).filter(methodName => {
-      return root.find(j.CallExpression, {
-        callee: {
-          name: methodName
-        }
-      }).length > 0;
+    let actuallyNeedsImport = Array.from(_statementsToImport).filter((methodName) => {
+      return (
+        root.find(j.CallExpression, {
+          callee: {
+            name: methodName,
+          },
+        }).length > 0
+      );
     });
 
     if (actuallyNeedsImport.length === 0) {
@@ -373,13 +378,18 @@ function writeImportStatements(j, root) {
     }
 
     if (importStatement.length === 0) {
-      importStatement = createImportStatement(j, '@ember/test-helpers', 'default', actuallyNeedsImport);
+      importStatement = createImportStatement(
+        j,
+        '@ember/test-helpers',
+        'default',
+        actuallyNeedsImport
+      );
       body.unshift(importStatement);
     } else {
-      let existingSpecifiers = importStatement.get("specifiers");
+      let existingSpecifiers = importStatement.get('specifiers');
 
-      actuallyNeedsImport.forEach(name => {
-        if (existingSpecifiers.filter(exSp => exSp.value.imported.name === name).length === 0) {
+      actuallyNeedsImport.forEach((name) => {
+        if (existingSpecifiers.filter((exSp) => exSp.value.imported.name === name).length === 0) {
           existingSpecifiers.push(j.importSpecifier(j.identifier(name)));
         }
       });
@@ -409,7 +419,7 @@ function createImportStatement(j, source, imported, local) {
 
   // multiple variable names indicates a destructured import
   if (Array.isArray(local)) {
-    let variableIds = local.map(function(v) {
+    let variableIds = local.map(function (v) {
       return j.importSpecifier(j.identifier(v), j.identifier(v));
     });
 
@@ -420,7 +430,7 @@ function createImportStatement(j, source, imported, local) {
     variable = j.importDefaultSpecifier(nameIdentifier);
 
     // if propName, use destructuring `import {pluck} from 'underscore'`
-    if (imported && imported !== "default") {
+    if (imported && imported !== 'default') {
       idIdentifier = j.identifier(imported);
       variable = j.importSpecifier(idIdentifier, nameIdentifier); // if both are same, one is dropped...
     }
@@ -439,11 +449,12 @@ function createImportStatement(j, source, imported, local) {
  * @returns {*}
  */
 function findParentFunction(j, path) {
-  while (path = path.parent) {
+  while ((path = path.parent)) {
     if (
-      j.FunctionExpression.check(path.node) && !isAndThenCall(j, path)
-      || j.FunctionDeclaration.check(path.node)
-      || j.ArrowFunctionExpression.check(path.node) && !isAndThenCall(j, path)) {
+      (j.FunctionExpression.check(path.node) && !isAndThenCall(j, path)) ||
+      j.FunctionDeclaration.check(path.node) ||
+      (j.ArrowFunctionExpression.check(path.node) && !isAndThenCall(j, path))
+    ) {
       return path;
     }
   }
@@ -458,10 +469,11 @@ function findParentFunction(j, path) {
 function isAndThenCall(j, path) {
   let parentNode = path.parent.node;
   return (
-    j.FunctionExpression.check(path.node) || j.ArrowFunctionExpression.check(path.node))
-    && j.CallExpression.check(parentNode)
-    && j.Identifier.check(parentNode.callee)
-    && parentNode.callee.name === 'andThen';
+    (j.FunctionExpression.check(path.node) || j.ArrowFunctionExpression.check(path.node)) &&
+    j.CallExpression.check(parentNode) &&
+    j.Identifier.check(parentNode.callee) &&
+    parentNode.callee.name === 'andThen'
+  );
 }
 
 /**
@@ -515,8 +527,7 @@ function makeAwait(j, collection) {
     .filter(({ parent: { node } }) => j.ExpressionStatement.check(node))
     .replaceWith(({ node }) => j.awaitExpression(node))
     .forEach((path) => {
-
-      return makeParentFunctionAsync(j, path)
+      return makeParentFunctionAsync(j, path);
     });
 }
 
@@ -555,5 +566,5 @@ module.exports = {
   migrateSelector,
   dropAndThen,
   makeAwait,
-  transformEachsCallbackArgs
+  transformEachsCallbackArgs,
 };

@@ -1,7 +1,14 @@
 'use strict';
 
 const { getParser } = require('codemod-cli').jscodeshift;
-const { createFocusExpression, createBlurExpression, makeAwait, dropAndThen, addImportStatement, writeImportStatements } = require('../../utils');
+const {
+  createFocusExpression,
+  createBlurExpression,
+  makeAwait,
+  dropAndThen,
+  addImportStatement,
+  writeImportStatements,
+} = require('../../utils');
 
 /**
  * Check if `node` is a `triggerEvent(...)` expression
@@ -11,11 +18,13 @@ const { createFocusExpression, createBlurExpression, makeAwait, dropAndThen, add
  * @returns {*|boolean}
  */
 function isGlobalHelperExpression(j, node) {
-  return j.CallExpression.check(node)
-    && j.Identifier.check(node.callee)
-    && node.callee.name === 'triggerEvent'
-    && node.arguments.length >= 2
-    && j.Literal.check(node.arguments[1]);
+  return (
+    j.CallExpression.check(node) &&
+    j.Identifier.check(node.callee) &&
+    node.callee.name === 'triggerEvent' &&
+    node.arguments.length >= 2 &&
+    j.Literal.check(node.arguments[1])
+  );
 }
 
 /**
@@ -33,28 +42,23 @@ function transform(file, api) {
   let root = j(source);
 
   let replacements = root
-      .find(j.CallExpression)
-      .filter(({ node }) => isGlobalHelperExpression(j, node))
-    ;
+    .find(j.CallExpression)
+    .filter(({ node }) => isGlobalHelperExpression(j, node));
+  let triggerReplacements = replacements.filter(
+    ({ node }) => node.arguments[1].value !== 'focus' && node.arguments[1].value !== 'blur'
+  );
 
-  let triggerReplacements = replacements
-    .filter(({ node }) => node.arguments[1].value !== 'focus' && node.arguments[1].value !== 'blur');
+  let focusReplacements = replacements.filter(({ node }) => node.arguments[1].value === 'focus');
 
-  let focusReplacements = replacements
-    .filter(({ node }) => node.arguments[1].value === 'focus');
-
-  let blurReplacements = replacements
-    .filter(({ node }) => node.arguments[1].value === 'blur');
+  let blurReplacements = replacements.filter(({ node }) => node.arguments[1].value === 'blur');
 
   if (blurReplacements.length > 0) {
-    blurReplacements
-      .replaceWith(({ node }) => createBlurExpression(j, node.arguments[0]));
+    blurReplacements.replaceWith(({ node }) => createBlurExpression(j, node.arguments[0]));
     addImportStatement(['blur']);
   }
 
   if (focusReplacements.length > 0) {
-    focusReplacements
-      .replaceWith(({ node }) => createFocusExpression(j, node.arguments[0]));
+    focusReplacements.replaceWith(({ node }) => createFocusExpression(j, node.arguments[0]));
     addImportStatement(['focus']);
   }
 

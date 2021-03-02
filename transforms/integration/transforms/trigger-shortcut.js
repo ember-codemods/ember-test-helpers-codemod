@@ -1,7 +1,13 @@
 'use strict';
 
 const { getParser } = require('codemod-cli').jscodeshift;
-const { makeParentFunctionAsync, createTriggerExpression, isJQuerySelectExpression, addImportStatement, writeImportStatements } = require('../../utils');
+const {
+  makeParentFunctionAsync,
+  createTriggerExpression,
+  isJQuerySelectExpression,
+  addImportStatement,
+  writeImportStatements,
+} = require('../../utils');
 
 const triggerShortcuts = [
   'change',
@@ -14,7 +20,7 @@ const triggerShortcuts = [
   'mousemove',
   'mouseout',
   'mouseover',
-  'mouseup'
+  'mouseup',
 ];
 
 /**
@@ -26,11 +32,13 @@ const triggerShortcuts = [
  */
 function isJQueryExpression(j, path) {
   let node = path.node;
-  return j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && isJQuerySelectExpression(j, node.callee.object, path)
-    && j.Identifier.check(node.callee.property)
-    && triggerShortcuts.indexOf(node.callee.property.name) !== -1;
+  return (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    isJQuerySelectExpression(j, node.callee.object, path) &&
+    j.Identifier.check(node.callee.property) &&
+    triggerShortcuts.indexOf(node.callee.property.name) !== -1
+  );
 }
 
 /**
@@ -47,12 +55,16 @@ function transform(file, api) {
   let root = j(source);
 
   let replacements = root
-      .find(j.CallExpression)
-      .filter((path) => isJQueryExpression(j, path))
-      .replaceWith(({ node }) => createTriggerExpression(j, node.callee.object.arguments[0], j.literal(node.callee.property.name)))
-      .forEach((path) => makeParentFunctionAsync(j, path))
-    ;
-
+    .find(j.CallExpression)
+    .filter((path) => isJQueryExpression(j, path))
+    .replaceWith(({ node }) =>
+      createTriggerExpression(
+        j,
+        node.callee.object.arguments[0],
+        j.literal(node.callee.property.name)
+      )
+    )
+    .forEach((path) => makeParentFunctionAsync(j, path));
   if (replacements.length > 0) {
     addImportStatement(['triggerEvent']);
   }

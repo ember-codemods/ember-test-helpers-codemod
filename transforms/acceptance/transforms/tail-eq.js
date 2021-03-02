@@ -3,7 +3,7 @@
 const { getParser } = require('codemod-cli').jscodeshift;
 const { addImportStatement, migrateSelector, writeImportStatements } = require('../../utils');
 
-const sizzleFunctions = [ 'find', 'click', 'fillIn' ];
+const sizzleFunctions = ['find', 'click', 'fillIn'];
 
 /**
  * Check if `node` is a selector function call with an :eq pattern as an argument
@@ -13,13 +13,14 @@ const sizzleFunctions = [ 'find', 'click', 'fillIn' ];
  * @returns {*|boolean}
  */
 function isAnEqExpression(j, node) {
-  return j.CallExpression.check(node)
-    && j.Identifier.check(node.callee)
-    && sizzleFunctions.indexOf(node.callee.name) !== -1
-    && j.Literal.check(node.arguments[0])
-    && typeof node.arguments[0].value === 'string'
-    && /:eq\(\d+\)$/.test(node.arguments[0].value)
-    ;
+  return (
+    j.CallExpression.check(node) &&
+    j.Identifier.check(node.callee) &&
+    sizzleFunctions.indexOf(node.callee.name) !== -1 &&
+    j.Literal.check(node.arguments[0]) &&
+    typeof node.arguments[0].value === 'string' &&
+    /:eq\(\d+\)$/.test(node.arguments[0].value)
+  );
 }
 
 /**
@@ -41,11 +42,9 @@ function transform(file, api) {
     .filter(({ node }) => isAnEqExpression(j, node))
     .replaceWith(({ node }) => {
       let eqExpression = migrateSelector(j, node.arguments[0]);
-      node.arguments = [ eqExpression, ...node.arguments.slice(1) ];
+      node.arguments = [eqExpression, ...node.arguments.slice(1)];
       return node;
-    })
-    ;
-
+    });
   if (replacements.length > 0) {
     addImportStatement(['findAll']);
   }

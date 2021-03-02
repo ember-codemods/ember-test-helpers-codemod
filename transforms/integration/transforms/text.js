@@ -1,7 +1,12 @@
 'use strict';
 
 const { getParser } = require('codemod-cli').jscodeshift;
-const { createFindExpression, isJQuerySelectExpression, addImportStatement, writeImportStatements } = require('../../utils');
+const {
+  createFindExpression,
+  isJQuerySelectExpression,
+  addImportStatement,
+  writeImportStatements,
+} = require('../../utils');
 
 /**
  * Creates a `find(selector).textContent` expression
@@ -13,17 +18,11 @@ const { createFindExpression, isJQuerySelectExpression, addImportStatement, writ
 function createExpression(j, findArgs) {
   if (findArgs.length === 0) {
     return j.memberExpression(
-      j.memberExpression(
-        j.thisExpression(),
-        j.identifier('element')
-      ),
+      j.memberExpression(j.thisExpression(), j.identifier('element')),
       j.identifier('textContent')
     );
   }
-  return j.memberExpression(
-    createFindExpression(j, findArgs),
-    j.identifier('textContent')
-  );
+  return j.memberExpression(createFindExpression(j, findArgs), j.identifier('textContent'));
 }
 
 /**
@@ -35,11 +34,13 @@ function createExpression(j, findArgs) {
  */
 function isJQueryExpression(j, path) {
   let node = path.node;
-  return j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && isJQuerySelectExpression(j, node.callee.object, path)
-    && j.Identifier.check(node.callee.property)
-    && node.callee.property.name === 'text';
+  return (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    isJQuerySelectExpression(j, node.callee.object, path) &&
+    j.Identifier.check(node.callee.property) &&
+    node.callee.property.name === 'text'
+  );
 }
 
 /**
@@ -65,7 +66,7 @@ function transform(file, api) {
   }
 
   writeImportStatements(j, root);
-  return root.toSource({quote: 'single'});
+  return root.toSource({ quote: 'single' });
 }
 
 module.exports = transform;

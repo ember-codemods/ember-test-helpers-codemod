@@ -1,7 +1,14 @@
 'use strict';
 
 const { getParser } = require('codemod-cli').jscodeshift;
-const { makeParentFunctionAsync, createTriggerExpression, createClickExpression, isJQuerySelectExpression, addImportStatement, writeImportStatements } = require('../../utils');
+const {
+  makeParentFunctionAsync,
+  createTriggerExpression,
+  createClickExpression,
+  isJQuerySelectExpression,
+  addImportStatement,
+  writeImportStatements,
+} = require('../../utils');
 
 /**
  * Check if `node` is a `this.$(selector).trigger(eventName)` expression
@@ -12,13 +19,15 @@ const { makeParentFunctionAsync, createTriggerExpression, createClickExpression,
  */
 function isJQueryExpression(j, path) {
   let node = path.node;
-  return j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && isJQuerySelectExpression(j, node.callee.object, path)
-    && j.Identifier.check(node.callee.property)
-    && node.callee.property.name === 'trigger'
-    && node.arguments.length === 1
-    && j.Literal.check(node.arguments[0]);
+  return (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    isJQuerySelectExpression(j, node.callee.object, path) &&
+    j.Identifier.check(node.callee.property) &&
+    node.callee.property.name === 'trigger' &&
+    node.arguments.length === 1 &&
+    j.Literal.check(node.arguments[0])
+  );
 }
 
 /**
@@ -46,9 +55,7 @@ function transform(file, api) {
         return createTriggerExpression(j, selector, eventName);
       }
     })
-    .forEach((path) => makeParentFunctionAsync(j, path))
-    ;
-
+    .forEach((path) => makeParentFunctionAsync(j, path));
   if (replacements.length > 0) {
     addImportStatement(['triggerEvent']);
   }

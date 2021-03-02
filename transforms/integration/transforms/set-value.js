@@ -1,7 +1,13 @@
 'use strict';
 
 const { getParser } = require('codemod-cli').jscodeshift;
-const { migrateSelector, makeParentFunctionAsync, isJQuerySelectExpression, addImportStatement, writeImportStatements } = require('../../utils');
+const {
+  migrateSelector,
+  makeParentFunctionAsync,
+  isJQuerySelectExpression,
+  addImportStatement,
+  writeImportStatements,
+} = require('../../utils');
 
 /**
  * Creates a `await fillIn(selector, value)` expression
@@ -12,10 +18,9 @@ const { migrateSelector, makeParentFunctionAsync, isJQuerySelectExpression, addI
  * @returns {*}
  */
 function createExpression(j, selector, value) {
-  return j.awaitExpression(j.callExpression(
-    j.identifier('fillIn'),
-    [migrateSelector(j, selector), value]
-  ));
+  return j.awaitExpression(
+    j.callExpression(j.identifier('fillIn'), [migrateSelector(j, selector), value])
+  );
 }
 
 /**
@@ -26,10 +31,7 @@ function createExpression(j, selector, value) {
  * @returns {*}
  */
 function createBlurExpression(j, selector) {
-  return j.awaitExpression(j.callExpression(
-    j.identifier('blur'),
-    [migrateSelector(j, selector)]
-  ));
+  return j.awaitExpression(j.callExpression(j.identifier('blur'), [migrateSelector(j, selector)]));
 }
 
 /**
@@ -41,50 +43,50 @@ function createBlurExpression(j, selector) {
  */
 function isJQueryExpression(j, path) {
   let node = path.node;
-  return j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && isJQuerySelectExpression(j, node.callee.object, path)
-    && j.Identifier.check(node.callee.property)
-    && node.callee.property.name === 'val'
-    && node.arguments.length > 0
+  return (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    isJQuerySelectExpression(j, node.callee.object, path) &&
+    j.Identifier.check(node.callee.property) &&
+    node.callee.property.name === 'val' &&
+    node.arguments.length > 0 &&
     // if it has a fluent trigger call, it may not be inside an arrow function
-    && (!hasFluentTriggerCall(j, path) || (
-        !j.ArrowFunctionExpression.check(path.parent.parent.parent.node)
-        && !hasFluentTriggerCall(j, path.parent.parent)
-      )
-    )
-    && !hasFluentTriggerAndMoreCall(j, path);
+    (!hasFluentTriggerCall(j, path) ||
+      (!j.ArrowFunctionExpression.check(path.parent.parent.parent.node) &&
+        !hasFluentTriggerCall(j, path.parent.parent))) &&
+    !hasFluentTriggerAndMoreCall(j, path)
+  );
 }
 
 function hasFluentTriggerCall(j, path) {
   let parent = path.parent && path.parent.node;
   let grandParent = parent && path.parent.parent.node;
-  return parent
-    && grandParent
-    && j.MemberExpression.check(parent)
-    && j.Identifier.check(parent.property)
-    && parent.property.name === 'trigger'
-    && j.CallExpression.check(grandParent)
-    ;
+  return (
+    parent &&
+    grandParent &&
+    j.MemberExpression.check(parent) &&
+    j.Identifier.check(parent.property) &&
+    parent.property.name === 'trigger' &&
+    j.CallExpression.check(grandParent)
+  );
 }
 
 function hasFluentTriggerAndMoreCall(j, path) {
   const greatGrandParent = path.parentPath.parentPath.parentPath.node;
-  return greatGrandParent
-    && j.MemberExpression.check(greatGrandParent)
-  ;
+  return greatGrandParent && j.MemberExpression.check(greatGrandParent);
 }
 
 function hasFluentChangeCall(j, path) {
   let parent = path.parent && path.parent.node;
   let grandParent = parent && path.parent.parent.node;
-  return parent
-    && grandParent
-    && j.MemberExpression.check(parent)
-    && j.Identifier.check(parent.property)
-    && parent.property.name === 'change'
-    && j.CallExpression.check(grandParent)
-    ;
+  return (
+    parent &&
+    grandParent &&
+    j.MemberExpression.check(parent) &&
+    j.Identifier.check(parent.property) &&
+    parent.property.name === 'change' &&
+    j.CallExpression.check(grandParent)
+  );
 }
 
 /**
@@ -105,10 +107,12 @@ function transform(file, api) {
   let replacements = root
     .find(j.CallExpression)
     .filter((path) => isJQueryExpression(j, path))
-    .replaceWith(({ node }) => createExpression(j, node.callee.object.arguments[0], node.arguments[0]))
+    .replaceWith(({ node }) =>
+      createExpression(j, node.callee.object.arguments[0], node.arguments[0])
+    )
     .forEach((path) => makeParentFunctionAsync(j, path));
 
-  let triggerReplacements = replacements
+  replacements
     .filter((path) => hasFluentTriggerCall(j, path))
     .map((path) => path.parent.parent.parent)
     .replaceWith((path) => j.expressionStatement(path.node.expression.callee.object))
@@ -117,7 +121,11 @@ function transform(file, api) {
   let changeReplacements = replacements
     .filter((path) => hasFluentChangeCall(j, path))
     .map((path) => path.parent.parent.parent)
-    .insertAfter((path) => j.expressionStatement(createBlurExpression(j, path.node.expression.callee.object.argument.arguments[0])))
+    .insertAfter((path) =>
+      j.expressionStatement(
+        createBlurExpression(j, path.node.expression.callee.object.argument.arguments[0])
+      )
+    )
     .replaceWith((path) => j.expressionStatement(path.node.expression.callee.object))
     .forEach((path) => makeParentFunctionAsync(j, path));
 

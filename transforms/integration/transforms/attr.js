@@ -1,7 +1,13 @@
 'use strict';
 
 const { getParser } = require('codemod-cli').jscodeshift;
-const { createFindExpression, createPropExpression, isJQuerySelectExpression, addImportStatement, writeImportStatements } = require('../../utils');
+const {
+  createFindExpression,
+  createPropExpression,
+  isJQuerySelectExpression,
+  addImportStatement,
+  writeImportStatements,
+} = require('../../utils');
 
 /**
  * Creates a `find(selector).getAttribute(attr)` expression
@@ -13,10 +19,8 @@ const { createFindExpression, createPropExpression, isJQuerySelectExpression, ad
  */
 function createAttributeExpression(j, findArgs, attr) {
   return j.callExpression(
-    j.memberExpression(
-      createFindExpression(j, findArgs),
-      j.identifier('getAttribute')
-    ), [attr]
+    j.memberExpression(createFindExpression(j, findArgs), j.identifier('getAttribute')),
+    [attr]
   );
 }
 
@@ -29,12 +33,14 @@ function createAttributeExpression(j, findArgs, attr) {
  */
 function isJQueryExpression(j, path) {
   let node = path.node;
-  return j.CallExpression.check(node)
-    && j.MemberExpression.check(node.callee)
-    && isJQuerySelectExpression(j, node.callee.object, path)
-    && j.Identifier.check(node.callee.property)
-    && node.callee.property.name === 'attr'
-    && node.arguments.length === 1;
+  return (
+    j.CallExpression.check(node) &&
+    j.MemberExpression.check(node.callee) &&
+    isJQuerySelectExpression(j, node.callee.object, path) &&
+    j.Identifier.check(node.callee.property) &&
+    node.callee.property.name === 'attr' &&
+    node.arguments.length === 1
+  );
 }
 /**
  * Should we translate this to a `.getAttribute('foo')` or a `.foo` expression?
@@ -65,13 +71,17 @@ function transform(file, api) {
     .find(j.CallExpression)
     .filter((path) => isJQueryExpression(j, path))
     .filter(({ node }) => isPropertyAccessPreferred(j, node))
-    .replaceWith(({ node }) => createPropExpression(j, node.callee.object.arguments, node.arguments[0].value));
+    .replaceWith(({ node }) =>
+      createPropExpression(j, node.callee.object.arguments, node.arguments[0].value)
+    );
 
   let attrReplacements = root
     .find(j.CallExpression)
     .filter((path) => isJQueryExpression(j, path))
     .filter(({ node }) => !isPropertyAccessPreferred(j, node))
-    .replaceWith(({ node }) => createAttributeExpression(j, node.callee.object.arguments, node.arguments[0]));
+    .replaceWith(({ node }) =>
+      createAttributeExpression(j, node.callee.object.arguments, node.arguments[0])
+    );
 
   if (propReplacements.length > 0 || attrReplacements.length > 0) {
     addImportStatement(['find']);

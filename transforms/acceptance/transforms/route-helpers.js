@@ -11,9 +11,9 @@ const { addImportStatement, writeImportStatements } = require('../../utils');
  * @returns {*|boolean}
  */
 function isRouteHelperExpression(j, node, type) {
-  return j.CallExpression.check(node)
-    && j.Identifier.check(node.callee)
-    && node.callee.name === type;
+  return (
+    j.CallExpression.check(node) && j.Identifier.check(node.callee) && node.callee.name === type
+  );
 }
 
 /**
@@ -29,18 +29,14 @@ function transform(file, api) {
 
   let root = j(source);
 
- [
-   'currentURL',
-   'currentPath',
-   'currentRouteName'
- ].forEach(function(type) {
-   if (root
-       .find(j.CallExpression)
-       .filter(({ node }) => isRouteHelperExpression(j, node, type))
-       .length > 0) {
-     addImportStatement([type]);
-   }
- });
+  ['currentURL', 'currentPath', 'currentRouteName'].forEach(function (type) {
+    if (
+      root.find(j.CallExpression).filter(({ node }) => isRouteHelperExpression(j, node, type))
+        .length > 0
+    ) {
+      addImportStatement([type]);
+    }
+  });
 
   writeImportStatements(j, root);
   return root.toSource({ quote: 'single' });
