@@ -1,3 +1,11 @@
+## v0.3.1 (2021-03-10)
+
+#### :rocket: Enhancement
+* [#46](https://github.com/ember-codemods/ember-test-helpers-codemod/pull/46) add `update-triggerevent-file-param` transform ([@zhanwang626](https://github.com/zhanwang626))
+
+#### Committers: 1
+- Zhan Wang ([@zhanwang626](https://github.com/zhanwang626))
+
 ## v0.3.0 (2021-03-02)
 
 #### :boom: Breaking Change
