@@ -37,7 +37,7 @@ test('It handles switching selected option on click and fires onSelect event', a
 
 ```
 
-**Output** (<small>[basic.input.js](transforms/this-render-migration/__testfixtures__/basic.output.js)</small>):
+**Output** (<small>[basic.output.js](transforms/this-render-migration/__testfixtures__/basic.output.js)</small>):
 ```js
 import { click, render } from '@ember/test-helpers';
 
@@ -48,6 +48,7 @@ test('It handles switching selected option on click and fires onSelect event', a
       </Common::TimeCommitmentSelector>
     `);
 })
+
 ```
 ---
 <a id="has-no-ember-test-helpers-import">**has-no-ember-test-helpers-import**</a>
@@ -64,7 +65,7 @@ test('It handles switching selected option on click and fires onSelect event', a
 
 ```
 
-**Output** (<small>[has-no-ember-test-helpers-import.input.js](transforms/this-render-migration/__testfixtures__/has-no-ember-test-helpers-import.output.js)</small>):
+**Output** (<small>[has-no-ember-test-helpers-import.output.js](transforms/this-render-migration/__testfixtures__/has-no-ember-test-helpers-import.output.js)</small>):
 ```js
 import { render } from '@ember/test-helpers';
 test('It handles switching selected option on click and fires onSelect event', async function(assert) {
@@ -76,4 +77,4 @@ test('It handles switching selected option on click and fires onSelect event', a
 })
 
 ```
-<!--FIXTURE_CONTENT_END-->
+<!--FIXTURES_CONTENT_END-->

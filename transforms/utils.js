@@ -552,6 +552,7 @@ module.exports = {
   isFindExpression,
   createFindExpression,
   createFindAllExpression,
+  createImportStatement,
   createQuerySelectorExpression,
   createQuerySelectorAllExpression,
   createClickExpression,
