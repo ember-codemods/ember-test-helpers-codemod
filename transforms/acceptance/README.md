@@ -71,7 +71,7 @@ test('visiting /foo', function(assert) {
 
 ```
 
-**Output** (<small>[andthen.input.js](transforms/acceptance/__testfixtures__/andthen.output.js)</small>):
+**Output** (<small>[andthen.output.js](transforms/acceptance/__testfixtures__/andthen.output.js)</small>):
 ```js
 import { visit } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -110,7 +110,7 @@ test('visiting /foo', function(assert) {
 });
 ```
 
-**Output** (<small>[attr.input.js](transforms/acceptance/__testfixtures__/attr.output.js)</small>):
+**Output** (<small>[attr.output.js](transforms/acceptance/__testfixtures__/attr.output.js)</small>):
 ```js
 import { find } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -145,7 +145,7 @@ test('visiting /foo', function(assert) {
 
 ```
 
-**Output** (<small>[click.input.js](transforms/acceptance/__testfixtures__/click.output.js)</small>):
+**Output** (<small>[click.output.js](transforms/acceptance/__testfixtures__/click.output.js)</small>):
 ```js
 import { click, currentURL, findAll, visit } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -198,7 +198,7 @@ test('function callback with one arg', function(assert) {
 
 ```
 
-**Output** (<small>[each.input.js](transforms/acceptance/__testfixtures__/each.output.js)</small>):
+**Output** (<small>[each.output.js](transforms/acceptance/__testfixtures__/each.output.js)</small>):
 ```js
 import { findAll } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -253,7 +253,7 @@ test('visiting /foo', function(assert) {
 
 ```
 
-**Output** (<small>[fill-in.input.js](transforms/acceptance/__testfixtures__/fill-in.output.js)</small>):
+**Output** (<small>[fill-in.output.js](transforms/acceptance/__testfixtures__/fill-in.output.js)</small>):
 ```js
 import { fillIn, currentURL, findAll, visit } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -285,7 +285,7 @@ test('visiting /foo', function(assert) {
 });
 ```
 
-**Output** (<small>[get-value.input.js](transforms/acceptance/__testfixtures__/get-value.output.js)</small>):
+**Output** (<small>[get-value.output.js](transforms/acceptance/__testfixtures__/get-value.output.js)</small>):
 ```js
 import { find } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -315,7 +315,7 @@ test('transforms get() correctly', function(assert) {
 
 ```
 
-**Output** (<small>[get.input.js](transforms/acceptance/__testfixtures__/get.output.js)</small>):
+**Output** (<small>[get.output.js](transforms/acceptance/__testfixtures__/get.output.js)</small>):
 ```js
 import { findAll } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -345,7 +345,7 @@ test('visiting /foo', function(assert) {
 });
 ```
 
-**Output** (<small>[has-class.input.js](transforms/acceptance/__testfixtures__/has-class.output.js)</small>):
+**Output** (<small>[has-class.output.js](transforms/acceptance/__testfixtures__/has-class.output.js)</small>):
 ```js
 import { find } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -376,7 +376,7 @@ test('visiting /foo', function(assert) {
 });
 ```
 
-**Output** (<small>[html.input.js](transforms/acceptance/__testfixtures__/html.output.js)</small>):
+**Output** (<small>[html.output.js](transforms/acceptance/__testfixtures__/html.output.js)</small>):
 ```js
 import { find } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -412,7 +412,7 @@ test('visiting /foo', function(assert) {
 });
 ```
 
-**Output** (<small>[key-event.input.js](transforms/acceptance/__testfixtures__/key-event.output.js)</small>):
+**Output** (<small>[key-event.output.js](transforms/acceptance/__testfixtures__/key-event.output.js)</small>):
 ```js
 import { keyEvent, currentURL, visit } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -442,7 +442,7 @@ test('visiting /foo', function(assert) {
 });
 ```
 
-**Output** (<small>[length.input.js](transforms/acceptance/__testfixtures__/length.output.js)</small>):
+**Output** (<small>[length.output.js](transforms/acceptance/__testfixtures__/length.output.js)</small>):
 ```js
 import { findAll } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -496,7 +496,7 @@ test('visiting /twiddles', function(assert) {
 
 ```
 
-**Output** (<small>[nested-in-and-then.input.js](transforms/acceptance/__testfixtures__/nested-in-and-then.output.js)</small>):
+**Output** (<small>[nested-in-and-then.output.js](transforms/acceptance/__testfixtures__/nested-in-and-then.output.js)</small>):
 ```js
 import { click } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -536,7 +536,7 @@ test('visiting /foo', function(assert) {
 });
 ```
 
-**Output** (<small>[prop.input.js](transforms/acceptance/__testfixtures__/prop.output.js)</small>):
+**Output** (<small>[prop.output.js](transforms/acceptance/__testfixtures__/prop.output.js)</small>):
 ```js
 import { find } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -567,7 +567,7 @@ test('visiting /foo', function(assert) {
 
 ```
 
-**Output** (<small>[route-helpers.input.js](transforms/acceptance/__testfixtures__/route-helpers.output.js)</small>):
+**Output** (<small>[route-helpers.output.js](transforms/acceptance/__testfixtures__/route-helpers.output.js)</small>):
 ```js
 import { currentURL, currentPath, currentRouteName, visit } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -605,7 +605,7 @@ test(':selected is replaced correctly', function(assert) {
 
 ```
 
-**Output** (<small>[selected.input.js](transforms/acceptance/__testfixtures__/selected.output.js)</small>):
+**Output** (<small>[selected.output.js](transforms/acceptance/__testfixtures__/selected.output.js)</small>):
 ```js
 import { find, findAll } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -639,7 +639,7 @@ test('visiting /foo', function(assert) {
 });
 ```
 
-**Output** (<small>[text.input.js](transforms/acceptance/__testfixtures__/text.output.js)</small>):
+**Output** (<small>[text.output.js](transforms/acceptance/__testfixtures__/text.output.js)</small>):
 ```js
 import { find } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -673,7 +673,7 @@ test('visiting /foo', function(assert) {
 });
 ```
 
-**Output** (<small>[trigger-event.input.js](transforms/acceptance/__testfixtures__/trigger-event.output.js)</small>):
+**Output** (<small>[trigger-event.output.js](transforms/acceptance/__testfixtures__/trigger-event.output.js)</small>):
 ```js
 import { currentURL, blur, focus, triggerEvent, visit } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -726,7 +726,7 @@ test('visiting /bar', async function(assert) {
 
 ```
 
-**Output** (<small>[visit.input.js](transforms/acceptance/__testfixtures__/visit.output.js)</small>):
+**Output** (<small>[visit.output.js](transforms/acceptance/__testfixtures__/visit.output.js)</small>):
 ```js
 import { currentURL, visit } from '@ember/test-helpers';
 import { test } from 'qunit';
@@ -755,4 +755,4 @@ test('visiting /bar', async function(assert) {
 });
 
 ```
-<!--FIXTURE_CONTENT_END-->
+<!--FIXTURES_CONTENT_END-->

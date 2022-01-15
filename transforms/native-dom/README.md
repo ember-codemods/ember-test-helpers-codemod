@@ -16,6 +16,7 @@ ember-test-helpers-codemod native-dom path/of/files/ or/some**/*glob.js
 
 <!--FIXTURES_TOC_START-->
 * [acceptance](#acceptance)
+* [context-argument](#context-argument)
 * [double-import](#double-import)
 * [integration](#integration)
 * [prune-import](#prune-import)
@@ -52,7 +53,7 @@ test('visiting /bar', async function(assert) {
 
 ```
 
-**Output** (<small>[acceptance.input.js](transforms/native-dom/__testfixtures__/acceptance.output.js)</small>):
+**Output** (<small>[acceptance.output.js](transforms/native-dom/__testfixtures__/acceptance.output.js)</small>):
 ```js
 import { find, visit, currentURL, currentRouteName } from '@ember/test-helpers';
 import { currentPath } from 'ember-native-dom-helpers';
@@ -79,6 +80,60 @@ test('visiting /bar', async function(assert) {
 
 ```
 ---
+<a id="context-argument">**context-argument**</a>
+
+**Input** (<small>[context-argument.input.js](transforms/native-dom/__testfixtures__/context-argument.input.js)</small>):
+```js
+import { find, findAll, visit, click, fillIn } from 'ember-native-dom-helpers';
+import { test } from 'qunit';
+import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
+
+moduleForAcceptance('click');
+
+test('visiting /foo', async function(assert) {
+  await visit('/foo');
+
+  const foo = find('.foo');
+  assert.equal(find('.bar', foo).textContent.trim(), 'bar');
+  assert.equal(find('.bar', find('.foo')).textContent.trim(), 'bar');
+  assert.equal(find('.bar', '.foo').textContent.trim(), 'bar');
+  assert.equal(findAll('.bar', foo).length, 2);
+  assert.equal(findAll('.bar', find('.foo')).length, 2);
+  assert.equal(findAll('.bar', '.foo').length, 2);
+
+  await click('button', foo);
+  await click('button', { shiftKey: true });
+  await click('button', foo, { shiftKey: true });
+});
+
+```
+
+**Output** (<small>[context-argument.output.js](transforms/native-dom/__testfixtures__/context-argument.output.js)</small>):
+```js
+import { find, findAll, visit, click } from '@ember/test-helpers';
+import { test } from 'qunit';
+import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
+
+moduleForAcceptance('click');
+
+test('visiting /foo', async function(assert) {
+  await visit('/foo');
+
+  const foo = find('.foo');
+  assert.equal(foo.querySelector('.bar').textContent.trim(), 'bar');
+  assert.equal(find('.foo').querySelector('.bar').textContent.trim(), 'bar');
+  assert.equal(find('.foo .bar').textContent.trim(), 'bar');
+  assert.equal(foo.querySelectorAll('.bar').length, 2);
+  assert.equal(find('.foo').querySelectorAll('.bar').length, 2);
+  assert.equal(findAll('.foo .bar').length, 2);
+
+  await click(foo.querySelector('button'));
+  await click('button', { shiftKey: true });
+  await click(foo.querySelector('button'), { shiftKey: true });
+});
+
+```
+---
 <a id="double-import">**double-import**</a>
 
 **Input** (<small>[double-import.input.js](transforms/native-dom/__testfixtures__/double-import.input.js)</small>):
@@ -86,11 +141,25 @@ test('visiting /bar', async function(assert) {
 import { click, currentURL } from 'ember-native-dom-helpers';
 import { find, visit } from 'ember-native-dom-helpers';
 
+test('visiting /foo', async function(assert) {
+  await visit('/foo');
+  await click('.foo');
+  assert.ok(find('.foo'));
+  assert.ok(currentURL());
+});
+
 ```
 
-**Output** (<small>[double-import.input.js](transforms/native-dom/__testfixtures__/double-import.output.js)</small>):
+**Output** (<small>[double-import.output.js](transforms/native-dom/__testfixtures__/double-import.output.js)</small>):
 ```js
 import { click, currentURL, find, visit } from '@ember/test-helpers';
+
+test('visiting /foo', async function(assert) {
+  await visit('/foo');
+  await click('.foo');
+  assert.ok(find('.foo'));
+  assert.ok(currentURL());
+});
 
 ```
 ---
@@ -167,7 +236,7 @@ test('and yet again', async function(assert) {
 
 ```
 
-**Output** (<small>[integration.input.js](transforms/native-dom/__testfixtures__/integration.output.js)</small>):
+**Output** (<small>[integration.output.js](transforms/native-dom/__testfixtures__/integration.output.js)</small>):
 ```js
 import {
   click,
@@ -243,11 +312,15 @@ test('and yet again', async function(assert) {
 ```js
 import { click } from 'ember-native-dom-helpers';
 
+click('.foo');
+
 ```
 
-**Output** (<small>[prune-import.input.js](transforms/native-dom/__testfixtures__/prune-import.output.js)</small>):
+**Output** (<small>[prune-import.output.js](transforms/native-dom/__testfixtures__/prune-import.output.js)</small>):
 ```js
 import { click } from '@ember/test-helpers';
 
+click('.foo');
+
 ```
-<!--FIXTURE_CONTENT_END-->
+<!--FIXTURES_CONTENT_END-->

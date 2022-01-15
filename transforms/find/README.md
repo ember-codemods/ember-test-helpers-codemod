@@ -32,11 +32,11 @@ test('it renders', function(assert) {
 });
 ```
 
-**Output** (<small>[find.input.js](transforms/find/__testfixtures__/find.output.js)</small>):
+**Output** (<small>[find.output.js](transforms/find/__testfixtures__/find.output.js)</small>):
 ```js
 test('it renders', function(assert) {
   assert.equal(this.element.querySelector('.foo').textContent.trim(), 'bar');
   assert.equal(this.element.querySelectorAll('.bar').length, 2);
 });
 ```
-<!--FIXTURE_CONTENT_END-->
+<!--FIXTURES_CONTENT_END-->

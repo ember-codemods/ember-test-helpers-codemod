@@ -33,7 +33,7 @@ test('test', async function(assert) {
 
 ```
 
-**Output** (<small>[basic.input.js](transforms/update-triggerevent-file-param/__testfixtures__/basic.output.js)</small>):
+**Output** (<small>[basic.output.js](transforms/update-triggerevent-file-param/__testfixtures__/basic.output.js)</small>):
 ```js
 import { triggerEvent } from '@ember/test-helpers';
 
@@ -47,4 +47,4 @@ test('test', async function(assert) {
 });
 
 ```
-<!--FIXTURE_CONTENT_END-->
+<!--FIXTURES_CONTENT_END-->

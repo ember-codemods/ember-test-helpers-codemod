@@ -33,6 +33,7 @@ ember-test-helpers-codemod integration path/of/files/ or/some**/*glob.js
 * [selected](#selected)
 * [set-value](#set-value)
 * [text](#text)
+* [typescript](#typescript)
 <!--FIXTURES_TOC_END-->
 
 <!--FIXTURES_CONTENT_START-->
@@ -82,7 +83,7 @@ test('and again', function(assert) {
 });
 ```
 
-**Output** (<small>[all.input.js](transforms/integration/__testfixtures__/all.output.js)</small>):
+**Output** (<small>[all.output.js](transforms/integration/__testfixtures__/all.output.js)</small>):
 ```js
 import { click, find, findAll, fillIn, blur, triggerEvent } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -146,7 +147,7 @@ test('it renders', function(assert) {
 
 ```
 
-**Output** (<small>[attr.input.js](transforms/integration/__testfixtures__/attr.output.js)</small>):
+**Output** (<small>[attr.output.js](transforms/integration/__testfixtures__/attr.output.js)</small>):
 ```js
 import { find } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -187,7 +188,7 @@ test('it renders', function(assert) {
 
 ```
 
-**Output** (<small>[click.input.js](transforms/integration/__testfixtures__/click.output.js)</small>):
+**Output** (<small>[click.output.js](transforms/integration/__testfixtures__/click.output.js)</small>):
 ```js
 import { find, findAll, click } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -240,9 +241,8 @@ test('it renders', function(assert) {
 
 ```
 
-**Output** (<small>[default-component-test.input.js](transforms/integration/__testfixtures__/default-component-test.output.js)</small>):
+**Output** (<small>[default-component-test.output.js](transforms/integration/__testfixtures__/default-component-test.output.js)</small>):
 ```js
-import { find } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -257,7 +257,7 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{foo-bar}}`);
 
-  assert.equal(find('*').textContent.trim(), '');
+  assert.equal(this.element.textContent.trim(), '');
 
   // Template block usage:
   this.render(hbs`
@@ -266,7 +266,7 @@ test('it renders', function(assert) {
     {{/foo-barl}}
   `);
 
-  assert.equal(find('*').textContent.trim(), 'template block text');
+  assert.equal(this.element.textContent.trim(), 'template block text');
 });
 
 ```
@@ -316,7 +316,7 @@ test('function callback with one arg', function(assert) {
 
 ```
 
-**Output** (<small>[each.input.js](transforms/integration/__testfixtures__/each.output.js)</small>):
+**Output** (<small>[each.output.js](transforms/integration/__testfixtures__/each.output.js)</small>):
 ```js
 import { findAll } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -392,7 +392,7 @@ test('it renders', function(assert) {
 
 ```
 
-**Output** (<small>[event.input.js](transforms/integration/__testfixtures__/event.output.js)</small>):
+**Output** (<small>[event.output.js](transforms/integration/__testfixtures__/event.output.js)</small>):
 ```js
 import { triggerEvent } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -443,7 +443,7 @@ test('it renders', function(assert) {
 
 ```
 
-**Output** (<small>[focus.input.js](transforms/integration/__testfixtures__/focus.output.js)</small>):
+**Output** (<small>[focus.output.js](transforms/integration/__testfixtures__/focus.output.js)</small>):
 ```js
 import { focus } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -481,7 +481,7 @@ test('it renders', function(assert) {
 
 ```
 
-**Output** (<small>[get-value.input.js](transforms/integration/__testfixtures__/get-value.output.js)</small>):
+**Output** (<small>[get-value.output.js](transforms/integration/__testfixtures__/get-value.output.js)</small>):
 ```js
 import { find } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -518,7 +518,7 @@ test('transforms get() correctly', function(assert) {
 
 ```
 
-**Output** (<small>[get.input.js](transforms/integration/__testfixtures__/get.output.js)</small>):
+**Output** (<small>[get.output.js](transforms/integration/__testfixtures__/get.output.js)</small>):
 ```js
 import { findAll } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -555,7 +555,7 @@ test('it renders', function(assert) {
 
 ```
 
-**Output** (<small>[has-class.input.js](transforms/integration/__testfixtures__/has-class.output.js)</small>):
+**Output** (<small>[has-class.output.js](transforms/integration/__testfixtures__/has-class.output.js)</small>):
 ```js
 import { find } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -596,7 +596,7 @@ test('it renders', function(assert) {
 
 ```
 
-**Output** (<small>[html.input.js](transforms/integration/__testfixtures__/html.output.js)</small>):
+**Output** (<small>[html.output.js](transforms/integration/__testfixtures__/html.output.js)</small>):
 ```js
 import { find } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -657,12 +657,14 @@ test('it renders', function(assert) {
   assert.ok(this.$('.foo:radio').length);
   assert.ok(this.$('.foo:reset').length);
   assert.ok(this.$('.foo:selected').length);
+  assert.ok(this.$(':selected').length);
   assert.ok(this.$('.foo:submit').length);
   assert.ok(this.$('.foo:text').length);
   assert.ok(this.$('.foo:visible').length);
   assert.ok(this.$(JQEXTENSION_SELECTOR_AS_LOCAL_CONST).length);
   assert.ok(this.$(ANY_SELECTOR_AS_IMPORTED_CONST).length);
 
+  assert.ok(this.$(':eq(0)').length);
   assert.ok(this.$('.foo:eq(0)').length);
   assert.ok(this.$('.foo:eq(1)').length);
   assert.ok(this.$('.foo:first-child').length);
@@ -673,7 +675,7 @@ test('it renders', function(assert) {
 
 ```
 
-**Output** (<small>[jq-extensions.input.js](transforms/integration/__testfixtures__/jq-extensions.output.js)</small>):
+**Output** (<small>[jq-extensions.output.js](transforms/integration/__testfixtures__/jq-extensions.output.js)</small>):
 ```js
 import { find, findAll } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -711,12 +713,14 @@ test('it renders', function(assert) {
   assert.ok(this.$('.foo:radio').length);
   assert.ok(this.$('.foo:reset').length);
   assert.ok(findAll('.foo:checked').length);
+  assert.ok(this.$(':selected').length);
   assert.ok(this.$('.foo:submit').length);
   assert.ok(this.$('.foo:text').length);
   assert.ok(this.$('.foo:visible').length);
   assert.ok(this.$(JQEXTENSION_SELECTOR_AS_LOCAL_CONST).length);
   assert.ok(this.$(ANY_SELECTOR_AS_IMPORTED_CONST).length);
 
+  assert.ok(this.$(':eq(0)').length);
   assert.ok(findAll(find('.foo')).length);
   assert.ok(findAll('.foo')[1].length);
   assert.ok(findAll('.foo:first-child').length);
@@ -747,7 +751,7 @@ test('it renders', function(assert) {
 
 ```
 
-**Output** (<small>[key-event.input.js](transforms/integration/__testfixtures__/key-event.output.js)</small>):
+**Output** (<small>[key-event.output.js](transforms/integration/__testfixtures__/key-event.output.js)</small>):
 ```js
 import { keyEvent } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -785,7 +789,7 @@ test('it renders', function(assert) {
 
 ```
 
-**Output** (<small>[length.input.js](transforms/integration/__testfixtures__/length.output.js)</small>):
+**Output** (<small>[length.output.js](transforms/integration/__testfixtures__/length.output.js)</small>):
 ```js
 import { findAll } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -822,7 +826,7 @@ test('it renders', function(assert) {
 
 ```
 
-**Output** (<small>[prop.input.js](transforms/integration/__testfixtures__/prop.output.js)</small>):
+**Output** (<small>[prop.output.js](transforms/integration/__testfixtures__/prop.output.js)</small>):
 ```js
 import { find } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -868,7 +872,7 @@ test(':selected is replaced correctly', function(assert) {
 
 ```
 
-**Output** (<small>[selected.input.js](transforms/integration/__testfixtures__/selected.output.js)</small>):
+**Output** (<small>[selected.output.js](transforms/integration/__testfixtures__/selected.output.js)</small>):
 ```js
 import { find, findAll } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -917,12 +921,20 @@ test('it renders', function(assert) {
   Ember.run(() => this.$('select').val('1').trigger('change'));
   Ember.run(() => this.$('#odd').val(10).trigger('input').trigger('blur'));
   this.$('#odd').val(10).trigger('input').trigger('blur');
+  this.$('input:eq(0)')
+    .val('foo')
+    .trigger('keydown')
+    .focusout();
+  this.$('input:eq(0)')
+    .val('foo')
+    .trigger('keydown')
+    .blur();
   assert.ok(true);
 });
 
 ```
 
-**Output** (<small>[set-value.input.js](transforms/integration/__testfixtures__/set-value.output.js)</small>):
+**Output** (<small>[set-value.output.js](transforms/integration/__testfixtures__/set-value.output.js)</small>):
 ```js
 import { fillIn, blur } from '@ember/test-helpers';
 import Ember from 'ember';
@@ -944,6 +956,14 @@ test('it renders', async function(assert) {
   Ember.run(() => this.$('select').val('1').trigger('change'));
   Ember.run(() => this.$('#odd').val(10).trigger('input').trigger('blur'));
   this.$('#odd').val(10).trigger('input').trigger('blur');
+  this.$('input:eq(0)')
+    .val('foo')
+    .trigger('keydown')
+    .focusout();
+  this.$('input:eq(0)')
+    .val('foo')
+    .trigger('keydown')
+    .blur();
   assert.ok(true);
 });
 
@@ -966,9 +986,15 @@ test('it renders', function(assert) {
   assert.equal(this.$('.foo').text().trim(), '');
 });
 
+test('it renders', function(assert) {
+  this.render(hbs`{{foo-bar}}`);
+
+  assert.equal(this.$().text().trim(), '');
+});
+
 ```
 
-**Output** (<small>[text.input.js](transforms/integration/__testfixtures__/text.output.js)</small>):
+**Output** (<small>[text.output.js](transforms/integration/__testfixtures__/text.output.js)</small>):
 ```js
 import { find } from '@ember/test-helpers';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -984,5 +1010,102 @@ test('it renders', function(assert) {
   assert.equal(find('.foo').textContent.trim(), '');
 });
 
+test('it renders', function(assert) {
+  this.render(hbs`{{foo-bar}}`);
+
+  assert.equal(this.element.textContent.trim(), '');
+});
+
 ```
-<!--FIXTURE_CONTENT_END-->
+---
+<a id="typescript">**typescript**</a>
+
+**Input** (<small>[typescript.input.ts](transforms/integration/__testfixtures__/typescript.input.ts)</small>):
+```ts
+import { click } from '@ember/test-helpers';
+import { moduleForComponent, test } from 'ember-qunit';
+import hbs from 'htmlbars-inline-precompile';
+
+moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
+  integration: true
+});
+
+function fillInHelper(value: string) {
+  this.$('.foo input').val(value);
+  this.$('.foo input').change();
+}
+
+test('it renders', async function(assert) {
+  this.render(hbs`{{foo-bar}}`);
+
+  await click('.foo');
+  assert.equal(this.$('.foo').attr('id'), 'foo');
+  this.$('.foo input').val('bar').change();
+  assert.equal(this.$('.foo').text().trim(), 'foo');
+});
+
+test('it renders again', function(assert) {
+  this.render(hbs`{{foo-bar}}`);
+
+  let selector = '.foo input';
+  assert.equal(this.$(selector).length, 1);
+  assert.equal(this.$(selector).val(), 'foo');
+  assert.ok(this.$('.foo').hasClass('selected'));
+});
+
+test('and again', function(assert) {
+  this.render(hbs`{{foo-bar}}`);
+
+  this.$('foo').click();
+
+  fillInHelper.call(this, 'bar');
+  assert.ok(this.$('.foo').hasClass('selected'));
+});
+
+```
+
+**Output** (<small>[typescript.output.ts](transforms/integration/__testfixtures__/typescript.output.ts)</small>):
+```ts
+import { click, find, findAll, fillIn, blur, triggerEvent } from '@ember/test-helpers';
+import { moduleForComponent, test } from 'ember-qunit';
+import hbs from 'htmlbars-inline-precompile';
+
+moduleForComponent('foo-bar', 'Integration | Component | foo bar', {
+  integration: true
+});
+
+async function fillInHelper(value: string) {
+  await fillIn('.foo input', value);
+  await triggerEvent('.foo input', 'change');
+}
+
+test('it renders', async function(assert) {
+  this.render(hbs`{{foo-bar}}`);
+
+  await click('.foo');
+  assert.equal(find('.foo').id, 'foo');
+  await fillIn('.foo input', 'bar');
+  await blur('.foo input');
+  assert.equal(find('.foo').textContent.trim(), 'foo');
+});
+
+test('it renders again', function(assert) {
+  this.render(hbs`{{foo-bar}}`);
+
+  let selector = '.foo input';
+  assert.equal(findAll(selector).length, 1);
+  assert.equal(find(selector).value, 'foo');
+  assert.ok(find('.foo').classList.contains('selected'));
+});
+
+test('and again', async function(assert) {
+  this.render(hbs`{{foo-bar}}`);
+
+  await click('foo');
+
+  fillInHelper.call(this, 'bar');
+  assert.ok(find('.foo').classList.contains('selected'));
+});
+
+```
+<!--FIXTURES_CONTENT_END-->
